@@ -625,12 +625,12 @@ class StartPageState extends State<StartPage> {
                     final splitGithubText = githubText.split("{homepage}");
 
                     final homepageText = l10n.dialog_aboutDesc3("{homepage}");
-                    final splitHomepageText = githubText.split("{homepage}");
+                    final splitHomepageText = homepageText.split("{homepage}");
 
                     showAboutDialog(
                       context: context,
                       applicationName: APP_NAME,
-                      applicationVersion:packageInfo.version,// + " (Final)",
+                      applicationVersion:"${packageInfo.version} (${packageInfo.buildNumber})",// + " (Final)",
                         children: [
                           const Divider(),
                           Text(l10n.dialog_aboutDesc1),
@@ -648,6 +648,7 @@ class StartPageState extends State<StartPage> {
                               onTap: () {
                                 launchUrlString(HOMEPAGE_SCHEME + GITHUB_HOMEPAGE + GITHUB_HOMEPAGE_PATH, mode: LaunchMode.externalApplication);
                               }),
+                          const Text(''),
                           InkWell(
                               child: Text.rich(
                                 TextSpan(
