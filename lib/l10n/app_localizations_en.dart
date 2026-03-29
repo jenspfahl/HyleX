@@ -157,6 +157,11 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String dialog_aboutDesc3(Object homepage) {
+    return 'Further help can be found here: $homepage';
+  }
+
+  @override
   String get dialog_overwriteGame => 'Starting a new game will delete an ongoing single game.';
 
   @override

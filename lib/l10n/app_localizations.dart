@@ -383,6 +383,12 @@ abstract class AppLocalizations {
   /// **'Visit {homepage} to view the code, report bugs and give stars!'**
   String dialog_aboutDesc2(Object homepage);
 
+  /// No description provided for @dialog_aboutDesc3.
+  ///
+  /// In en, this message translates to:
+  /// **'Further help can be found here: {homepage}'**
+  String dialog_aboutDesc3(Object homepage);
+
   /// No description provided for @dialog_overwriteGame.
   ///
   /// In en, this message translates to:

@@ -157,6 +157,11 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
+  String dialog_aboutDesc3(Object homepage) {
+    return 'Weitergehende Hilfe bekommst du hier: $homepage';
+  }
+
+  @override
   String get dialog_overwriteGame => 'Wenn in neues Einzelspiel begonnen wird, wird das aktuelle Einzelspiel gelöscht.';
 
   @override
@@ -549,7 +554,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get settings_animateMoves => 'Spielzüge animieren';
 
   @override
-  String get settings_animateMovesDescription => 'Spielzüge wie Verschieben order Ablegen von Spielsteinen werden animiert.';
+  String get settings_animateMovesDescription => 'Spielzüge wie Verschieben oder Ablegen von Spielsteinen werden animiert.';
 
   @override
   String get settings_showCoordinates => 'Koordinaten anzeigen';

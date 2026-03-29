@@ -621,8 +621,11 @@ class StartPageState extends State<StartPage> {
                   IconButton(onPressed: () async {
                     final packageInfo = await PackageInfo.fromPlatform();
 
-                    final text = l10n.dialog_aboutDesc2("{homepage}");
-                    final splitText = text.split("{homepage}");
+                    final githubText = l10n.dialog_aboutDesc2("{homepage}");
+                    final splitGithubText = githubText.split("{homepage}");
+
+                    final homepageText = l10n.dialog_aboutDesc3("{homepage}");
+                    final splitHomepageText = githubText.split("{homepage}");
 
                     showAboutDialog(
                       context: context,
@@ -635,15 +638,28 @@ class StartPageState extends State<StartPage> {
                           InkWell(
                               child: Text.rich(
                                 TextSpan(
-                                  text: splitText.first,
+                                  text: splitGithubText.first,
                                   children: <TextSpan>[
                                     TextSpan(text: GITHUB_HOMEPAGE, style: const TextStyle(decoration: TextDecoration.underline)),
-                                    TextSpan(text: splitText.last),
+                                    TextSpan(text: splitGithubText.last),
                                   ],
                                 ),
                               ),
                               onTap: () {
                                 launchUrlString(HOMEPAGE_SCHEME + GITHUB_HOMEPAGE + GITHUB_HOMEPAGE_PATH, mode: LaunchMode.externalApplication);
+                              }),
+                          InkWell(
+                              child: Text.rich(
+                                TextSpan(
+                                  text: splitHomepageText.first,
+                                  children: <TextSpan>[
+                                    TextSpan(text: HYLEX_HOMEPAGE, style: const TextStyle(decoration: TextDecoration.underline)),
+                                    TextSpan(text: splitHomepageText.last),
+                                  ],
+                                ),
+                              ),
+                              onTap: () {
+                                launchUrlString(HOMEPAGE_SCHEME + HYLEX_HOMEPAGE, mode: LaunchMode.externalApplication);
                               }),
                           const Divider(),
                           const Text('© Jens Pfahl 2026', style: TextStyle(fontSize: 12)),

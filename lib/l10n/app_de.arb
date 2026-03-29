@@ -51,6 +51,7 @@
   "dialog_quitTheApp" : "Willst du die App beenden?",
   "dialog_aboutDesc1": "Ein Entropy-Klon",
   "dialog_aboutDesc2": "Besuche {homepage}, um den Code anzusehen, Fehler zu melden und Sterne zu vergeben!",
+  "dialog_aboutDesc3": "Weitergehende Hilfe bekommst du hier: {homepage}",
   "dialog_overwriteGame": "Wenn in neues Einzelspiel begonnen wird, wird das aktuelle Einzelspiel gelöscht.",
 
   "dialog_whichGroundSize": "Auf welcher Spielfeldgröße möchtest du spielen?",
@@ -193,7 +194,7 @@
   "settings_commonSettings": "Allgemeine Einstellungen",
   "settings_gameSettings": "Spieleinstellungen",
   "settings_animateMoves": "Spielzüge animieren",
-  "settings_animateMovesDescription": "Spielzüge wie Verschieben order Ablegen von Spielsteinen werden animiert.",
+  "settings_animateMovesDescription": "Spielzüge wie Verschieben oder Ablegen von Spielsteinen werden animiert.",
   "settings_showCoordinates": "Koordinaten anzeigen",
   "settings_showCoordinatesDescription": "Koordinaten auf der X- und Y-Achse im Spielfeld anzeigen.",
   "settings_showPointsForOrder": "Punkte für Order anzeigen",

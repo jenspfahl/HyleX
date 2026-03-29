@@ -53,6 +53,7 @@
   "dialog_quitTheApp" : "Do you want to close the app?",
   "dialog_aboutDesc1" : "An Entropy clone",
   "dialog_aboutDesc2" : "Visit {homepage} to view the code, report bugs and give stars!",
+  "dialog_aboutDesc3": "Further help can be found here: {homepage}",
   "dialog_overwriteGame": "Starting a new game will delete an ongoing single game.",
 
   "dialog_whichGroundSize": "What size playing field would you like to play on?",
