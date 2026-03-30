@@ -383,6 +383,12 @@ abstract class AppLocalizations {
   /// **'Visit {homepage} to view the code, report bugs and give stars!'**
   String dialog_aboutDesc2(Object homepage);
 
+  /// No description provided for @dialog_aboutDesc3.
+  ///
+  /// In en, this message translates to:
+  /// **'Further help can be found here: {homepage}'**
+  String dialog_aboutDesc3(Object homepage);
+
   /// No description provided for @dialog_overwriteGame.
   ///
   /// In en, this message translates to:
@@ -1184,7 +1190,7 @@ abstract class AppLocalizations {
   /// No description provided for @settings_signMessagesExplanation.
   ///
   /// In en, this message translates to:
-  /// **'Sign your messages with your public key if you want to ensure that your messages are not tampered with and to prove that they come from you. This can be important if you share your moves with the public.'**
+  /// **'Sign your messages with your private key if you want to ensure that your messages are not tampered with and to prove that they come from you. This can be important if you share your moves with the public.'**
   String get settings_signMessagesExplanation;
 
   /// No description provided for @settings_signMessages_Never.

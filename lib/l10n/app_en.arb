@@ -53,6 +53,7 @@
   "dialog_quitTheApp" : "Do you want to close the app?",
   "dialog_aboutDesc1" : "An Entropy clone",
   "dialog_aboutDesc2" : "Visit {homepage} to view the code, report bugs and give stars!",
+  "dialog_aboutDesc3": "Further help can be found here: {homepage}",
   "dialog_overwriteGame": "Starting a new game will delete an ongoing single game.",
 
   "dialog_whichGroundSize": "What size playing field would you like to play on?",
@@ -217,7 +218,7 @@
   "settings_showLanguageSelectorForMessagesDescription": "If your opponents speak a different language, enable this to see a language-selector at the Send-button.",
   "settings_signMessages": "Sign messages",
   "settings_signMessagesDescription": "Messages you send in multiplayer games are cryptographically signed.",
-  "settings_signMessagesExplanation": "Sign your messages with your public key if you want to ensure that your messages are not tampered with and to prove that they come from you. This can be important if you share your moves with the public.",
+  "settings_signMessagesExplanation": "Sign your messages with your private key if you want to ensure that your messages are not tampered with and to prove that they come from you. This can be important if you share your moves with the public.",
   "settings_signMessages_Never": "Never",
   "settings_signMessagesDescription_Never": "Messages will NOT be signed.",
   "settings_signMessages_OnDemand": "On Request",

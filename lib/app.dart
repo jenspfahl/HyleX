@@ -11,7 +11,7 @@ import 'l10n/app_localizations.dart';
 
 const String APP_NAME = 'HyleX';
 final HOMEPAGE_SCHEME = 'https://';
-final HOMEPAGE = 'hylex.jepfa.de';
+final HYLEX_HOMEPAGE = 'hylex.jepfa.de';
 final GITHUB_HOMEPAGE = 'github.com';
 final GITHUB_HOMEPAGE_PATH = '/jenspfahl/hylex';
 
