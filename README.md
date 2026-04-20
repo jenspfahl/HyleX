@@ -1,3 +1,8 @@
+[![Downloads last month](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fgithub.com%2Fkitswas%2Ffdroid-metrics-dashboard%2Fraw%2Frefs%2Fheads%2Fmain%2Fprocessed%2Fmonthly%2Fde.jepfa.bdt.json&query=%24.total_downloads&logo=fdroid&label=Downloads%20last%20month)](https://f-droid.org/en/packages/de.jepfa.hyle_x/)
+
+
+[![Downloads (all time)](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fgithub.com%2Fkitswas%2Ffdroid-metrics-dashboard%2Fraw%2Frefs%2Fheads%2Fmain%2Fprocessed%2Ftotal%2Fde.jepfa.bdt.json&query=%24.total_downloads&logo=fdroid&label=Downloads%20(all%20time))](https://f-droid.org/en/packages/de.jepfa.hyle_x/)
+
 # HyleX
 
 A Hyle (Entropy) board game clone
@@ -40,6 +45,11 @@ Download the app on F-Droid:
 - coming soon
 
 Download the app on Google Play Store:
+
+[<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
+alt="Get it on F-Droid"
+height="80">](https://f-droid.org/de/packages/de.jepfa.hyle_x/)
+
 
 [<img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"
 alt="Get it on Google Play"
