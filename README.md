@@ -42,14 +42,12 @@ Fore more details, see [hylex.jepfa.de](https://hylex.jepfa.de).
 
 Download the app on F-Droid:
 
-- coming soon
-
-Download the app on Google Play Store:
-
 [<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
 alt="Get it on F-Droid"
 height="80">](https://f-droid.org/de/packages/de.jepfa.hyle_x/)
 
+
+Download the app on Google Play Store:
 
 [<img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"
 alt="Get it on Google Play"
