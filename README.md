@@ -21,7 +21,7 @@ Features:
 
 *) You can also play against friends. Note that there is no central game server. You and your opponent must share your moves via regular messaging apps or QR codes.
 
-**) The app uses App Links to open the app from clicking on such links, which requires a web-domain (https://hx.jepfa.de), to prove integrity of these App Links. Otherwise App Links won't open the app and won't perform the opponent's move. No data is sent to this web-server.
+**) The app uses App Links to open the app from clicking on such links, which requires a web-domain (https://hx.jepfa.de), to prove integrity of these App Links. The Android OS basically reads [this JSON file](https://hx.jepfa.de/.well-known/assetlinks.json) and verifies that the installed HyleX app is signed with one of the well known containing certificate fingerprints (either by my own or by the one from F-Droid). Otherwise App Links won't open the app and won't perform the opponent's move. 
 
 Fore more details, see [hylex.jepfa.de](https://hylex.jepfa.de).
 
@@ -70,7 +70,7 @@ It performs up to 4 rounds ahead, limited by the CPU power of the current device
 
 ### Multiplayer
 
-Exchanging moves between remote players happen "out-of-band", i.e. there is no central server involved. Instead, moves etc. are shared as URLs allowing to open them directly with the HyleX app. These URLs can be shared through any medium, like messengers, email, QR codes etc. So transport is not handled by this app.
+Exchanging moves between remote players happen "out-of-band", i.e. there is no central server involved. Instead, moves etc. are encoded as URLs allowing to share and open them directly with the HyleX app. These URLs can be shared through any medium, like messengers, email, QR codes etc. So transport is not handled by this app.
 Later there is an idea of incorporating Veilid to share these URLs to remote players.
 
 #### Invitation state transitions
