@@ -1,0 +1,13 @@
+Ez egy adatvédelmi szempontból barátságos, Entropy / Hyle 7-szerű társasjáték klón Androidra. Játssz egyedül vagy barátokkal!
+
+Az eredeti, Eric Solomon által készített „Entropy” játék két játékkört igényel, a szerepek cseréjével a kettő között. A HyleX-szel egyetlen körben is összemérheted magad a géppel, ha kiválasztasz egy szerepet.
+
+Játszhatsz barátok ellen is. Fontos tudni, hogy nincs központi játékszerver. Neked és az ellenfelednek a lépéseiteket hagyományos üzenetküldő alkalmazásokon vagy QR-kódokon keresztül kell megosztanotok.
+
+Jellemzők:
+* Egyjátékos mód: Versenyezz a számítógéppel
+* Többjátékos mód: Játssz egy távoli ellenfél ellen
+* Adatvédelem: Nincs központi szerver, nincs személyes adat, nincsenek hirdetések, nincs követés
+* FOSS (ingyenes és nyílt forráskódú szoftver)
+
+További információ a <a href="https://hylex.jepfa.de">hylex.jepfa.de</a> címen

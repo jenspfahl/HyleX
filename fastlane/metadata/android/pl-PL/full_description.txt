@@ -1,0 +1,13 @@
+To przyjazny dla prywatności klon gry planszowej w stylu Entropy / Hyle 7 na Androida. Graj w pojedynkę lub ze znajomymi!
+
+Oryginalna gra „Entropy” Erica Solomona wymaga rozegrania dwóch rund z zamianą ról. W HyleX możesz rywalizować sam ze sobą, rozgrywając tylko jedną rundę i wybierając jedną z ról.
+
+Możesz też grać przeciwko znajomym. Pamiętaj, że nie ma centralnego serwera gry. Ty i Twój przeciwnik musicie wymieniać się ruchami za pomocą zwykłych komunikatorów lub kodów QR.
+
+Funkcje:
+* Gra jednoosobowa: Rywalizuj z komputerem
+* Tryb wieloosobowy: graj przeciwko zdalnemu przeciwnikowi
+* Prywatność: Brak centralnego serwera, brak danych osobowych, brak reklam, brak śledzenia
+* To jest FOSS (Wolne i Otwarte Oprogramowanie)
+
+Więcej informacji znajdziesz na <a href="https://hylex.jepfa.de">hylex.jepfa.de</a>

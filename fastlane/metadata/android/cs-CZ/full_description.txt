@@ -1,0 +1,13 @@
+Toto je klon deskové hry podobné Entropy / Hyle 7 pro Android, který klade důraz na ochranu soukromí. Zahrajte si ji sami nebo s přáteli!
+
+Původní hra „Entropy“ od Erica Solomona vyžaduje dvě herní kola s následnou výměnou rolí. S HyleX si můžete zahrát sami proti sobě v jediném kole, stačí si vybrat roli.
+
+Můžete hrát i proti přátelům. Upozorňujeme, že hra nemá centrální server. Své tahy si se soupeřem musíte sdílet pomocí běžných chatovacích aplikací nebo QR kódů.
+
+Vlastnosti:
+* Hra pro jednoho hráče: Změřte síly s počítačem
+* Hra pro více hráčů: Hrajte proti vzdálenému soupeři
+* Soukromí: Žádný centrální server, žádná personalizovaná data, žádné reklamy, žádné sledování
+* Jedná se o FOSS (Free and Open Source Software)
+
+Více informací naleznete na <a href="https://hylex.jepfa.de">hylex.jepfa.de</a>

@@ -1,0 +1,13 @@
+Dette er en privatlivsvenlig klon af brætspillet Entropy / Hyle 7 til Android. Spil alene eller med venner!
+
+Det originale spil "Entropy" af Eric Solomon kræver to runder med et rolleskift imellem. Med HyleX kan du spille mod dig selv i kun én runde ved at vælge en rolle.
+
+Du kan også spille mod venner. Bemærk, at der ikke er nogen central spilserver. Du og din modstander skal dele jeres træk via almindelige beskedapps eller QR-koder.
+
+Funktioner:
+* Singleplayer: Spil mod computeren
+* Multiplayer: Spil mod en fjern modstander
+* Privatliv: Ingen central server, ingen personlige data, ingen annoncer, ingen sporing
+* Det er FOSS
+
+Mere information på <a href="https://hylex.jepfa.de">hylex.jepfa.de</a>
