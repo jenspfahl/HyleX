@@ -754,7 +754,7 @@ class StartPageState extends State<StartPage> {
         showAlertDialog('Not yet implemented!');
       },
       onLongPress: longClickHandler,
-      child: _buildChip(label, 80, isMain ? 15 : 13, 5, colorIdx, icon),
+      child: _buildChip(label, 80, isMain ? 14 : 13, isMain ? 2.5 : 3.5, colorIdx, icon),
     );
   }
 
@@ -927,22 +927,29 @@ class StartPageState extends State<StartPage> {
 
   Widget _buildChip(String label, double radius, double textSize,
       double padding, int colorIdx, [IconData? icon]) {
-    final text = Text(label,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: textSize,
-                    color: Colors.white,
-                    fontWeight: icon == null ? FontWeight.bold : null,
-                  )
-              );
+    final text = Padding(
+      padding: const EdgeInsets.all(5.5),
+      child: Text(label,
+                    textAlign: TextAlign.center,
+                    softWrap: true,
+                    style: TextStyle(
+                      fontSize: textSize,
+                      color: Colors.white,
+                      fontWeight: icon == null ? FontWeight.bold : null,
+                    )
+                ),
+    );
     final content = icon != null
-        ? Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(icon, color: Colors.white),
-              text,
-            ],
-          )
+        ? Padding(
+          padding: const EdgeInsets.all(6.0),
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(icon, color: Colors.white),
+                text,
+              ],
+            ),
+        )
         : text;
     return Container(
       decoration: const BoxDecoration(
