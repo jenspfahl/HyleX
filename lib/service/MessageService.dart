@@ -5,6 +5,7 @@ import 'package:hyle_x/app.dart';
 import 'package:hyle_x/model/common.dart';
 import 'package:hyle_x/service/PreferenceService.dart';
 import 'package:hyle_x/service/StorageService.dart';
+import 'package:language_code/language_code.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -303,14 +304,23 @@ class MessageService {
                   builder: (BuildContext statefulBuilderContext, setState) {
 
                     final showLanguages = asyncSnapshot.data??false;
-                    final languagePopupMenuItems = showLanguages
-                        ? ensureEnglishFirst(AppLocalizations.supportedLocales)
-                            .map((locale) => PopupMenuItem<String>(
-                                value: locale.languageCode,
-                                child: Text(l10n.messaging_sendYourMoveAsMessageInLanguage(locale.languageCode.toUpperCase())),
-                              ))
-                            .toList()
-                        : <PopupMenuItem<String>>[];
+
+                    final deviceLangCode = LanguageCode.code;
+
+                    var languagePopupMenuItems = <PopupMenuItem<String>>[];
+                    if (showLanguages) {
+                      languagePopupMenuItems = AppLocalizations.supportedLocales
+                          .map((locale) => LanguageCodes.fromLocale(locale))
+                          .map((langCode) => PopupMenuItem<String>(
+                        value: langCode.locale.languageCode,
+                        child: Text((_messageLanguage == langCode.code ? "✓ " : "  ") +
+                            (deviceLangCode.locale.languageCode == langCode.code ? "* ": "") +
+                            l10n.messaging_sendYourMoveAsMessageInLanguage(langCode.code.toUpperCase()) + " (" + langCode.nativeName + ")",
+                        style: TextStyle(fontWeight: (_messageLanguage == langCode.code ? FontWeight.bold: null))),
+                      ))
+                          .toList();
+                    }
+
 
                     return Container(
                       height: 350,
