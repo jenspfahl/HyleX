@@ -18,6 +18,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:listen_sharing_intent/listen_sharing_intent.dart';
 import 'package:tri_switcher/tri_switcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
+import 'package:badges/badges.dart' as badges;
 
 import '../../l10n/app_localizations.dart';
 import '../../model/achievements.dart';
@@ -432,19 +433,7 @@ class StartPageState extends State<StartPage> {
                 child: _buildGameLogo(20, true)
             ),
 
-            if (isDebug)
-              GestureDetector(
-                onLongPress: () {
-                  if (_user.hasSigningCapability()) {
-                    showAlertDialog("User Public Key: ${_user.id}");
-                  }
-                  else {
-                    showAlertDialog("User ID: ${_user.id}");
-                  }
-                },
-                  child: _buildHello())
-            else
-              _buildHello(),
+            _buildHello(),
 
             GridView.count(
               crossAxisCount: 3,
@@ -1474,18 +1463,54 @@ class StartPageState extends State<StartPage> {
   }
 
   Widget _buildHello() {
-    if (_user.name.isNotEmpty)
-      return Text(
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500, fontStyle: FontStyle.italic),
-          l10n.hello(_user.name)
-      );
-    else if (isDebug)
-      return Text(
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500, fontStyle: FontStyle.italic),
-          l10n.hello(_user.getReadableId())
-      );
-      else
-        return Container();
+    var name = "";
+    if (_user.name.isNotEmpty) {
+      name = _user.name;
+    }
+
+    final overallScore = _user.achievements.getOverallScore(Scope.All);
+    final level = _getLevel(overallScore.toInt());
+    return badges.Badge(
+      showBadge: isDebug || _user.achievements.getOverallGameCount(Scope.All) > 0,
+      position: badges.BadgePosition.topEnd(top: -27, end: -22),
+      badgeContent: Text(overallScore.toString(),
+          style: TextStyle(color: Colors.white)),
+      ignorePointer: false,
+      onTap: () => _showAchievementDialog(),
+      badgeStyle: badges.BadgeStyle(
+          shape: badges.BadgeShape.instagram,
+          badgeColor: getColorFromIdx(level),
+          borderSide: BorderSide(color: Colors.white, width: 2),
+          padding: EdgeInsets.all(7.5),
+          borderRadius: BorderRadius.circular(24),
+      ),
+      child: GestureDetector(
+        onTap: () => _showAchievementDialog(),
+        child: Text(
+            style: TextStyle(fontSize: 24,
+                fontWeight: FontWeight.w500,
+                fontStyle: FontStyle.italic),
+            l10n.hello(name)
+        ),
+      ),
+    );
+  }
+
+  int _getLevel(num score) {
+    const start = 100.0;
+    if (score < start) {
+      return 0;
+    }
+
+    int level = 0;
+    num threshold = start;
+
+    while (threshold <= score) {
+      level++;
+      threshold *= 2;
+    }
+
+    return level;
   }
 
 }
