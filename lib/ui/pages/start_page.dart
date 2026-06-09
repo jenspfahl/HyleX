@@ -1476,7 +1476,7 @@ class StartPageState extends State<StartPage> {
       badgeContent: Text(overallScore.toString(),
           style: TextStyle(color: Colors.white)),
       ignorePointer: false,
-      onTap: () => _showAchievementDialog(),
+      onTap: () => _showLegendDialog(),
       badgeStyle: badges.BadgeStyle(
           shape: badges.BadgeShape.instagram,
           badgeColor: getColorFromIdx(level),
@@ -1496,6 +1496,23 @@ class StartPageState extends State<StartPage> {
     );
   }
 
+  int _getThreshold(int index) {
+    const start = 100;
+    if (index == 0) {
+      return 0;
+    }
+
+    int level = 1;
+    int threshold = start;
+
+    while (level < index) {
+      level++;
+      threshold *= 2;
+    }
+
+    return threshold;
+  }
+
   int _getLevel(num score) {
     const start = 100.0;
     if (score < start) {
@@ -1511,6 +1528,65 @@ class StartPageState extends State<StartPage> {
     }
 
     return level;
+  }
+
+  _showLegendDialog() {
+    SmartDialog.show(builder: (_) {
+      List<Widget> children = [
+        Text(
+          "Level Legend",
+          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
+        ),
+      ];
+      for (int i = 0; i <= maxDimension; i++) {
+        children.add(Padding(
+          padding: const EdgeInsets.symmetric(vertical: 4),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Expanded(
+                child: badges.Badge(
+                  position: badges.BadgePosition.center(),
+                  badgeContent: Text(_getThreshold(i).toString(),
+                      style: TextStyle(color: Colors.white)),
+                  badgeStyle: badges.BadgeStyle(
+                    shape: badges.BadgeShape.instagram,
+                    badgeColor: getColorFromIdx(i),
+                    borderSide: BorderSide(color: Colors.white, width: 2),
+                    padding: EdgeInsets.all(7.5),
+                    borderRadius: BorderRadius.circular(24),
+                  ),
+                  child: Text("     ",
+                      style: TextStyle(fontSize: 24,
+                        fontWeight: FontWeight.w500,
+                        fontStyle: FontStyle.italic))),
+              ),
+              Spacer(),
+              Text("Level ${i + 1} - ${getColorNameFromIndex(i, l10n)}",
+                  style: TextStyle(color: Colors.white))
+          ],),
+        ));
+      }
+
+      return Container(
+        height: 650,
+        width: 300,
+        decoration: BoxDecoration(
+          color: DIALOG_BG,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        alignment: Alignment.center,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(18, 18, 18, 8),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisSize: MainAxisSize.max,
+            children: children,
+          ),
+        ),
+      );
+    });
   }
 
 }
