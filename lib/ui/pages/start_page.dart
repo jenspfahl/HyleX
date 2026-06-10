@@ -497,7 +497,7 @@ class StartPageState extends State<StartPage> {
                               return HyleXGround(_user, play);
                             },
                                 settings: RouteSettings(name: PLAY_GROUND)
-                            ));
+                            )).then((result) => setState(() {}));
                       }
                       else {
                         showAlertDialog(l10n.error_nothingToResume);
@@ -516,6 +516,7 @@ class StartPageState extends State<StartPage> {
                                 ? MenuMode.None
                                 : MenuMode.Multiplayer),
                     longClickHandler: () {
+
                       if (isDebug) {
                           setState(() {
                             isDebug = !isDebug;
@@ -545,7 +546,7 @@ class StartPageState extends State<StartPage> {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
                           return MultiPlayerMatches(_user, key: globalMultiPlayerMatchesKey);
-                        }));
+                        })).then((result) => setState(() {}));
                   }
                 )
                     : _buildEmptyCell(),
@@ -751,7 +752,7 @@ class StartPageState extends State<StartPage> {
         showAlertDialog('Not yet implemented!');
       },
       onLongPress: longClickHandler,
-      child: _buildChip(label, 80, isMain ? 14 : 13, isMain ? 2.5 : 3.5, colorIdx, icon),
+      child: _buildChip(label, 80, isMain ? 14 : 13, isMain ? 1.5 : 3.5, colorIdx, icon),
     );
   }
 
@@ -852,7 +853,8 @@ class StartPageState extends State<StartPage> {
               _user,
               Play.newSinglePlay(header, chaosPlayer, orderPlayer));
         },
-            settings: RouteSettings(name: PLAY_GROUND)));
+            settings: RouteSettings(name: PLAY_GROUND)))
+        .then((result) => setState(() {}));
   }
 
   Future<void> _startMultiPlayerGame(
