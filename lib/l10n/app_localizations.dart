@@ -885,6 +885,18 @@ abstract class AppLocalizations {
   /// **'Purple'**
   String get color_purple;
 
+  /// No description provided for @color_black.
+  ///
+  /// In en, this message translates to:
+  /// **'Black'**
+  String get color_black;
+
+  /// No description provided for @levelState.
+  ///
+  /// In en, this message translates to:
+  /// **'Level State'**
+  String get levelState;
+
   /// No description provided for @gameState_gameStarted.
   ///
   /// In en, this message translates to:

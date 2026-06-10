@@ -156,8 +156,11 @@
   "color_teal" : "Teal",
   "color_indigo" : "Indigo",
   "color_purple" : "Purple",
-  
-  
+  "color_black" : "Black",
+
+  "levelState" : "Level State",
+
+
   "gameState_gameStarted" : "Game started",
   "gameState_gameOver" : "Game over",
   "gameState_gameOverWinner" : "Game over! {who} has won this game!",

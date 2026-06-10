@@ -248,7 +248,7 @@ String getColorNameFromIndex(int index, AppLocalizations l10n) {
     case 10: return l10n.color_teal;
     case 11: return l10n.color_indigo;
     case 12: return l10n.color_purple;
-    default: return "Black"; //TODO
+    default: return l10n.color_black;
   }
 }
 

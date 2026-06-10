@@ -422,6 +422,12 @@ class AppLocalizationsHe extends AppLocalizations {
   String get color_purple => 'סגול';
 
   @override
+  String get color_black => 'Black';
+
+  @override
+  String get levelState => 'Level State';
+
+  @override
   String get gameState_gameStarted => 'המשחק התחיל';
 
   @override

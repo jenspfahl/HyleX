@@ -152,6 +152,10 @@
   "color_teal" : "Türkis",
   "color_indigo" : "Indigo",
   "color_purple" : "Lila",
+  "color_black" : "Schwarz",
+
+  "levelState" : "Levelstatus",
+
 
   "gameState_gameStarted" : "Spielbeginn",
   "gameState_gameOver" : "Spielende",

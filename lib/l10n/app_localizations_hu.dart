@@ -422,6 +422,12 @@ class AppLocalizationsHu extends AppLocalizations {
   String get color_purple => 'Lila';
 
   @override
+  String get color_black => 'Black';
+
+  @override
+  String get levelState => 'Level State';
+
+  @override
   String get gameState_gameStarted => 'Játék elkezdődött';
 
   @override

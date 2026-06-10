@@ -584,6 +584,14 @@ class StartPageState extends State<StartPage> {
 
             ),
 
+            if (isDebug)
+              Text(
+                  style: TextStyle(fontSize: 16,
+                      fontWeight: FontWeight.w300,
+                      fontStyle: FontStyle.italic),
+                  "You have some actions to perform!"
+              ),
+
             Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -1469,17 +1477,17 @@ class StartPageState extends State<StartPage> {
     }
 
     final overallScore = _user.achievements.getOverallScore(Scope.All);
-    final level = _getLevel(overallScore.toInt());
+    final currentLevel = _user.achievements.getCurrentLevel();
     return badges.Badge(
       showBadge: isDebug || _user.achievements.getOverallGameCount(Scope.All) > 0,
       position: badges.BadgePosition.topEnd(top: -27, end: -22),
       badgeContent: Text(overallScore.toString(),
           style: TextStyle(color: Colors.white)),
       ignorePointer: false,
-      onTap: () => _showLegendDialog(),
+      onTap: () => _showLegendDialog(currentLevel, overallScore),
       badgeStyle: badges.BadgeStyle(
           shape: badges.BadgeShape.instagram,
-          badgeColor: getColorFromIdx(level),
+          badgeColor: getColorFromIdx(currentLevel - 1),
           borderSide: BorderSide(color: Colors.white, width: 2),
           padding: EdgeInsets.all(7.5),
           borderRadius: BorderRadius.circular(24),
@@ -1496,97 +1504,76 @@ class StartPageState extends State<StartPage> {
     );
   }
 
-  int _getThreshold(int index) {
-    const start = 100;
-    if (index == 0) {
-      return 0;
-    }
 
-    int level = 1;
-    int threshold = start;
-
-    while (level < index) {
-      level++;
-      threshold *= 2;
-    }
-
-    return threshold;
-  }
-
-  int _getLevel(num score) {
-    const start = 100.0;
-    if (score < start) {
-      return 0;
-    }
-
-    int level = 0;
-    num threshold = start;
-
-    while (threshold <= score) {
-      level++;
-      threshold *= 2;
-    }
-
-    return level;
-  }
-
-  _showLegendDialog() {
+  _showLegendDialog(int currentLevel, num overallScore) {
     SmartDialog.show(builder: (_) {
       List<Widget> children = [
         Text(
-          "Level Legend",
+          l10n.achievements_totalScore + " / " + l10n.levelState,
           style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
         ),
       ];
-      for (int i = 0; i <= maxDimension; i++) {
+      for (int level = 1; level <= Achievements.MAX_LEVEL; level++) {
         children.add(Padding(
-          padding: const EdgeInsets.symmetric(vertical: 4),
+          padding: const EdgeInsets.fromLTRB(12, 4, 8, 4),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.max,
             children: [
-              Expanded(
-                child: badges.Badge(
-                  position: badges.BadgePosition.center(),
-                  badgeContent: Text(_getThreshold(i).toString(),
-                      style: TextStyle(color: Colors.white)),
-                  badgeStyle: badges.BadgeStyle(
-                    shape: badges.BadgeShape.instagram,
-                    badgeColor: getColorFromIdx(i),
-                    borderSide: BorderSide(color: Colors.white, width: 2),
-                    padding: EdgeInsets.all(7.5),
-                    borderRadius: BorderRadius.circular(24),
-                  ),
-                  child: Text("     ",
-                      style: TextStyle(fontSize: 24,
-                        fontWeight: FontWeight.w500,
-                        fontStyle: FontStyle.italic))),
-              ),
+              _buildPassiveBadge(level, -1, null),
               Spacer(),
-              Text("Level ${i + 1} - ${getColorNameFromIndex(i, l10n)}",
-                  style: TextStyle(color: Colors.white))
+              if (currentLevel == level)
+                _buildPassiveBadge(level, currentLevel, overallScore),
+              if (currentLevel == level)
+                Spacer(),
+              Text("Level $level - ${getColorNameFromIndex(level - 1, l10n)}",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: currentLevel == level ? 18 : null,
+                      fontWeight: currentLevel == level ? FontWeight.bold : null))
           ],),
         ));
       }
 
       return Container(
         height: 650,
-        width: 300,
+        width: 350,
         decoration: BoxDecoration(
           color: DIALOG_BG,
           borderRadius: BorderRadius.circular(10),
         ),
         alignment: Alignment.center,
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(18, 18, 18, 8),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            mainAxisSize: MainAxisSize.max,
-            children: children,
+        child: GestureDetector(
+          onTap: () => SmartDialog.dismiss(),
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(18, 18, 18, 8),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisSize: MainAxisSize.max,
+              children: children,
+            ),
           ),
         ),
       );
     });
+  }
+
+  Expanded _buildPassiveBadge(int level, int currentLevel, num? overallScore) {
+    return Expanded(
+                child: badges.Badge(
+                    position: badges.BadgePosition.centerStart(),
+                    badgeContent: Text(overallScore?.toString()??_user.achievements.getThresholdForLevel(level).toString(),
+                        style: TextStyle(color: Colors.white)),
+                    badgeStyle: badges.BadgeStyle(
+                      shape: badges.BadgeShape.instagram,
+                      badgeColor: getColorFromIdx(level - 1),
+                      borderSide: BorderSide(color: Colors.white, width: currentLevel == level ? 2 : 1),
+                      padding: EdgeInsets.all(7.5),
+                      borderRadius: BorderRadius.circular(24),
+                    ),
+                    child: Text("     ",
+                        style: TextStyle(fontSize: 24,
+                            fontWeight: FontWeight.w500,
+                            fontStyle: FontStyle.italic))),
+              );
   }
 
 }

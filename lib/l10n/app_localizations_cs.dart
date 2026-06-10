@@ -422,6 +422,12 @@ class AppLocalizationsCs extends AppLocalizations {
   String get color_purple => 'Fialová';
 
   @override
+  String get color_black => 'Black';
+
+  @override
+  String get levelState => 'Level State';
+
+  @override
   String get gameState_gameStarted => 'Hra byla zahájena';
 
   @override
