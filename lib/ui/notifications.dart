@@ -4,10 +4,12 @@ class GameNotification {
   final String message;
   final IconData icon;
   final Color color;
+  final Function()? handler;
   GameNotification({
     required this.message,
     required this.icon,
     required this.color,
+    this.handler
   });
 }
 
@@ -50,22 +52,24 @@ class _NotificationCarouselState extends State<NotificationCarousel> {
             },
           ),
         ),
-        const SizedBox(height: 10),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: List.generate(
-            _notifications.length,
-            (index) => Container(
-              width: 8,
-              height: 8,
-              margin: const EdgeInsets.symmetric(horizontal: 4),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: _currentPage == index ? Colors.brown : Colors.grey,
+        if (_notifications.length > 1)
+          const SizedBox(height: 10),
+        if (_notifications.length > 1)
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: List.generate(
+              _notifications.length,
+              (index) => Container(
+                width: 8,
+                height: 8,
+                margin: const EdgeInsets.symmetric(horizontal: 4),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: _currentPage == index ? Colors.brown : Colors.grey,
+                ),
               ),
             ),
           ),
-        ),
       ],
     );
   }
@@ -94,31 +98,43 @@ class _NotificationCarouselState extends State<NotificationCarousel> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
         ),
-        child: Container(
-          padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
-            gradient: LinearGradient(
-              colors: [notification.color.withOpacity(0.2), Colors.white],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
+        child: GestureDetector(
+          onTap: notification.handler != null
+              ? () {
+                  notification.handler!();
+                  setState(() {
+                    _notifications.remove(notification);
+                    widget.notificationListChanged(_notifications);
+                  });
+                }
+              : null,
+          child: Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+           //   color: notification.color.withOpacity(0.2),
+              gradient: LinearGradient(
+                colors: [notification.color.withOpacity(0.2), notification.color.withOpacity(0.8)],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
             ),
-          ),
-          child: Row(
-            children: [
-              Icon(notification.icon, color: notification.color),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Text(
-                  notification.message,
-                  softWrap: true,
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
+            child: Row(
+              children: [
+                Icon(notification.icon, color: notification.color),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    notification.message,
+                    softWrap: true,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

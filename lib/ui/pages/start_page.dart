@@ -13,6 +13,7 @@ import 'package:hyle_x/ui/pages/qr_reader.dart';
 import 'package:hyle_x/ui/pages/remotetest/remote_test_widget.dart';
 import 'package:hyle_x/ui/pages/settings_page.dart';
 import 'package:hyle_x/utils/fortune.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:listen_sharing_intent/listen_sharing_intent.dart';
@@ -74,23 +75,7 @@ class StartPageState extends State<StartPage> {
   AppLocalizations get l10n => AppLocalizations.of(context)!;
 
 
-  List<GameNotification> gameNotifications = [
-    GameNotification(
-      message: "Tell me the game rules",
-      icon: Icons.info,
-      color: Colors.blue,
-    ),
-    GameNotification(
-      message: "One level up!",
-      icon: Icons.arrow_upward_outlined,
-      color: Colors.green,
-    ),
-    GameNotification(
-      message: "An opponent is waiting for you",
-      icon: Icons.snooze,
-      color: Colors.orange,
-    ),
-  ];
+  List<GameNotification> gameNotifications = [];
 
 
   @override
@@ -102,6 +87,8 @@ class StartPageState extends State<StartPage> {
     PreferenceService().getInt(PreferenceService.DATA_LOGO_COLOR_Y).then((c) => setState(() {if (c != null) _logoY = c;} ));
     PreferenceService().getInt(PreferenceService.DATA_LOGO_COLOR_L).then((c) => setState(() {if (c != null) _logoL = c;} ));
     PreferenceService().getInt(PreferenceService.DATA_LOGO_COLOR_E).then((c) => setState(() {if (c != null) _logoE = c;} ));
+
+
 
     StorageService().loadUser().then((user) =>
         setState(() {
@@ -125,6 +112,51 @@ class StartPageState extends State<StartPage> {
       _readAndParseSharedText(value);
       ReceiveSharingIntent.instance.reset();
     });
+
+    gameNotifications = [
+      GameNotification(
+          message: "Tell me the game rules",
+          icon: CupertinoIcons.question_circle_fill,
+          color: getColorFromIdx(3),//Colors.blue,
+          handler: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) {
+                  return Intro();
+                }));
+          }
+      ),
+      GameNotification(
+          message: "One level up!",
+          icon: Icons.plus_one,
+          color: getColorFromIdx(2)//Colors.green,
+      ),
+      GameNotification(
+          message: "An opponent is waiting for you, check it out!",
+          icon: MdiIcons.sleep,
+          color: getColorFromIdx(1),//Colors.orange,
+          handler: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) {
+                  return MultiPlayerMatches(_user, key: globalMultiPlayerMatchesKey);
+                })).then((result) => setState(() {}));
+          }
+      ),
+      GameNotification(
+          message: "Please star the app!",
+          icon: MdiIcons.star,
+          color: getColorFromIdx(3),//Colors.blue,
+          handler: () {
+            launchUrlString(HOMEPAGE_SCHEME + GITHUB_HOMEPAGE + GITHUB_HOMEPAGE_PATH, mode: LaunchMode.externalApplication);
+          }
+      ),
+      GameNotification(
+          message: "Invite a friend to a multiplay!",
+          icon: Icons.near_me,
+          color: getColorFromIdx(3),//Colors.blue,
+          handler: () {
+            _sendMultiPlayInvite(context);          }
+      ),
+    ];
   }
 
   void _readAndParseSharedText(List<SharedMediaFile> value) {
@@ -495,11 +527,7 @@ class StartPageState extends State<StartPage> {
                     : _menuMode == MenuMode.MultiplayerNew
                     ? _buildCell(l10n.startMenu_sendInvite, 3, icon: Icons.near_me,
                     clickHandler: () async {
-                      if (context.mounted) {
-                        _selectPlayerGroundSize(context, (playSize) =>
-                            _selectMultiPlayerMode(context, (playMode) =>
-                              inviteRemoteOpponent(context, playSize, playMode)));
-                      }
+                      _sendMultiPlayInvite(context);
                     }
                 )
                     : _buildEmptyCell(),
@@ -691,6 +719,14 @@ class StartPageState extends State<StartPage> {
         ),
       ),
     );
+  }
+
+  void _sendMultiPlayInvite(BuildContext context) {
+    if (context.mounted) {
+      _selectPlayerGroundSize(context, (playSize) =>
+          _selectMultiPlayerMode(context, (playMode) =>
+            inviteRemoteOpponent(context, playSize, playMode)));
+    }
   }
 
   void inviteRemoteOpponent(
