@@ -30,6 +30,7 @@ import '../../model/user.dart';
 import '../../service/PlayStateManager.dart';
 import '../../service/PreferenceService.dart';
 import '../dialogs.dart';
+import '../notifications.dart';
 import '../ui_utils.dart';
 import 'game_ground.dart';
 import 'intro.dart';
@@ -71,6 +72,25 @@ class StartPageState extends State<StartPage> {
   bool _lockMessageDialog = false;
 
   AppLocalizations get l10n => AppLocalizations.of(context)!;
+
+
+  List<GameNotification> gameNotifications = [
+    GameNotification(
+      message: "Tell me the game rules",
+      icon: Icons.info,
+      color: Colors.blue,
+    ),
+    GameNotification(
+      message: "One level up!",
+      icon: Icons.arrow_upward_outlined,
+      color: Colors.green,
+    ),
+    GameNotification(
+      message: "An opponent is waiting for you",
+      icon: Icons.snooze,
+      color: Colors.orange,
+    ),
+  ];
 
 
   @override
@@ -585,12 +605,11 @@ class StartPageState extends State<StartPage> {
 
             ),
 
-            if (isDebug)
-              Text(
-                  style: TextStyle(fontSize: 16,
-                      fontWeight: FontWeight.w300,
-                      fontStyle: FontStyle.italic),
-                  "You have some actions to perform!"
+            if (isDebug && gameNotifications.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: NotificationCarousel(gameNotifications,
+                        (newList) => setState(() => gameNotifications = newList)),
               ),
 
             Row(
