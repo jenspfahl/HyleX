@@ -143,14 +143,11 @@ class StartPageState extends State<StartPage> {
           showWhen: (data, baseKey) {
             final shownAtLevel = data.getInt(baseKey, "shownAtLevel");
             final currentLevel = _user.achievements.getCurrentLevel();
-            final shownAtGameCount = data.getInt(baseKey, "shownAtGameCount");
-            final currentGameCount = _user.achievements.getOverallGameCount(Scope.All);
 
-            return currentLevel > 1 && currentLevel > shownAtLevel && currentGameCount > shownAtGameCount;
+            return currentLevel > 1 && currentLevel > shownAtLevel;
           },
           discardHandler: (data, baseKey) {
             data.setInt(baseKey, "shownAtLevel", _user.achievements.getCurrentLevel());
-            data.setInt(baseKey, "shownAtGameCount", _user.achievements.getOverallGameCount(Scope.All).toInt());
           }
       ),
       GameNotification(
@@ -702,7 +699,7 @@ class StartPageState extends State<StartPage> {
             FutureBuilder(
                 future: _loadNotificationData(),
                 builder: (_, snapshot) {
-                  if (!snapshot.hasError) {
+                  if (!snapshot.hasError && snapshot.hasData) {
                     return Padding(
                         padding: const EdgeInsets.symmetric(vertical: 8.0),
                         child: NotificationCarousel(

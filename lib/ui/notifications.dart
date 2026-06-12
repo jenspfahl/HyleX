@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:hyle_x/model/play.dart';
 import 'package:hyle_x/service/PreferenceService.dart';
@@ -12,6 +13,7 @@ class GameNotification {
   final bool Function(NotificationData data, String baseKey) showWhen;
   final bool Function(NotificationData data, String baseKey)? clickHandler;
   final Function(NotificationData data, String baseKey)? discardHandler;
+  int timestamp = 0;
   GameNotification({
     required this.key,
     required this.message,
@@ -108,7 +110,25 @@ class _NotificationCarouselState extends State<NotificationCarousel> {
     final visibleNotifications = widget.notifications
       .where((n) => !_hiddenNotifications.contains(n))
       .where((n) => n.showWhen(widget.data, n.key))
+      .map((n) {
+        n.timestamp = widget.data.getInt(n.key, "timestamp");
+        if (n.timestamp == 0) {
+          n.timestamp = DateTime.now().millisecondsSinceEpoch;
+          debugPrint("set ${n.key}/timestamp=${n.timestamp}");
+          widget.data.setInt(n.key, "timestamp", n.timestamp);
+        }
+        return n;
+      })
+      .sortedBy((n) => (0x7FFFFFFFFFFFFFFF - n.timestamp).toString())
       .toList();
+
+    // clear timestamps for invisible notifications
+    widget.notifications
+        .where((n) => !visibleNotifications.contains(n))
+        .forEach((n) {
+          n.timestamp = 0;
+          widget.data.setInt(n.key, "timestamp", 0);
+    });
 
     return Column(
       children: [
@@ -232,6 +252,8 @@ class _NotificationCarouselState extends State<NotificationCarousel> {
   void _hideNotification(GameNotification notification) {
     setState(() {
       _hiddenNotifications.add(notification);
+      notification.timestamp = 0;
+      widget.data.setInt(notification.key, "timestamp", 0);
     });
   }
 
