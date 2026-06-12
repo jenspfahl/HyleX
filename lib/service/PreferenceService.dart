@@ -33,6 +33,8 @@ class PreferenceService {
   static final DATA_LOGO_COLOR_L = 'data/logoColor/l';
   static final DATA_LOGO_COLOR_E = 'data/logoColor/e';
 
+  static final DATA_NOTIFICATION_PROPS = 'data/notificationProperties/';
+
   static final PREF_PREFIX = 'pref';
   static final PREF_ANIMATE_MOVES = '$PREF_PREFIX/animateMoves';
   static final PREF_SHOW_COORDINATES = '$PREF_PREFIX/showCoordinates';
@@ -89,6 +91,12 @@ class PreferenceService {
 
     return prefs.getString(key);
   }
+  
+  Future<List<String>?> getStringList(String key) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    return prefs.getStringList(key);
+  }
 
   Future<int?> getInt(String key) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -112,6 +120,12 @@ class PreferenceService {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
     return prefs.setString(key, value);
+  }
+  
+  Future<bool> setStringList(String key, List<String> value) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    return prefs.setStringList(key, value);
   }
 
   Future<bool> setInt(String key, int value) async {

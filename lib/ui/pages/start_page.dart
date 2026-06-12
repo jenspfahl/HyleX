@@ -115,46 +115,108 @@ class StartPageState extends State<StartPage> {
 
     gameNotifications = [
       GameNotification(
-          message: "Tell me the game rules",
+          key: "showRuleKey",
+          message: "I am new, please tell me the game rules!",
           icon: CupertinoIcons.question_circle_fill,
-          color: getColorFromIdx(3),//Colors.blue,
-          handler: () {
+          color: getColorFromIdx(1),
+          showWhen: (data, key) {
+            final shown = data.getBool(key);
+            return !shown && _user.achievements.getOverallGameCount(Scope.All) <= 1;
+          },
+          clickHandler: (data, key) {
+            data.setBool(key, true);
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) {
                   return Intro();
                 }));
+            return true;
+          },
+          discardHandler: (data, key) {
+            data.setBool(key, true);
           }
       ),
       GameNotification(
-          message: "One level up!",
+          key: "stepUpLevelKey",
+          message: "You stepped one level up! Congrats!",
           icon: Icons.plus_one,
-          color: getColorFromIdx(2)//Colors.green,
+          color: getColorFromIdx(2),
+          showWhen: (data, key) {
+            final shownAtLevel = data.getInt(key);
+            final currentLevel = _user.achievements.getCurrentLevel();
+            return currentLevel > 1 && currentLevel > shownAtLevel;
+          },
+          discardHandler: (data, key) {
+            data.setInt(key, _user.achievements.getCurrentLevel());
+          }
       ),
       GameNotification(
-          message: "An opponent is waiting for you, check it out!",
+          key: "opponentsWaitingKey",
+          message: "One or more opponents are waiting for you, don't let them wait!",
           icon: MdiIcons.sleep,
-          color: getColorFromIdx(1),//Colors.orange,
-          handler: () {
+          color: getColorFromIdx(4),
+          showWhen: (data, key) {
+            final shownAtMultiplayGameCount = data.getInt(key);
+            final multiplayGameCount = _user.achievements.getOverallGameCount(Scope.Multi);
+
+            return (multiplayGameCount == 0 || multiplayGameCount > shownAtMultiplayGameCount) && _userHasToTakeAction(data.allPlayHeaders);
+          },
+          clickHandler: (data, key) {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) {
                   return MultiPlayerMatches(_user, key: globalMultiPlayerMatchesKey);
                 })).then((result) => setState(() {}));
+            return false;
+          },
+          discardHandler: (data, key) {
+            data.setInt(key, _user.achievements.getOverallGameCount(Scope.Multi).toInt());
           }
       ),
       GameNotification(
-          message: "Please star the app!",
+          key: "rateTheAppKey",
+          message: "Do you like the app? Please rate or star it!",
           icon: MdiIcons.star,
-          color: getColorFromIdx(3),//Colors.blue,
-          handler: () {
+          color: getColorFromIdx(5),
+          showWhen: (data, key) {
+            var shownAtGameCount = data.getInt(key);
+            if (shownAtGameCount == 0) shownAtGameCount = 10;
+            final overallGameCount = _user.achievements.getOverallGameCount(Scope.All);
+
+            if (shownAtGameCount == 0x7FFFFFFFFFFFFFFF) {
+              // indicator to never show it again
+              return false;
+            }
+
+            return overallGameCount >= shownAtGameCount;
+          },
+          clickHandler: (data, key) {
+            // if we assume the user rated, we will never ask again
+            data.setInt(key, 0x7FFFFFFFFFFFFFFF);
             launchUrlString(HOMEPAGE_SCHEME + GITHUB_HOMEPAGE + GITHUB_HOMEPAGE_PATH, mode: LaunchMode.externalApplication);
+            return true;
+          },
+          discardHandler: (data, key) {
+            data.setInt(key, _user.achievements.getOverallGameCount(Scope.All).toInt() * 2);
           }
       ),
       GameNotification(
-          message: "Invite a friend to a multiplay!",
+          key: "inviteOpponentKey",
+          message: "Tired of playing alone? Invite a friend to a multiplay match!",
           icon: Icons.near_me,
-          color: getColorFromIdx(3),//Colors.blue,
-          handler: () {
-            _sendMultiPlayInvite(context);          }
+          color: getColorFromIdx(3),
+          showWhen: (data, key) {
+            final shown = data.getBool(key);
+            return !shown
+                && _user.achievements.getOverallGameCount(Scope.Single) >= 15
+                && _user.achievements.getOverallGameCount(Scope.Multi) == 0;
+          },
+          clickHandler: (data, key) {
+            data.setBool(key, true);
+            _sendMultiPlayInvite(context);
+            return true;
+          },
+          discardHandler: (data, key) {
+            data.setBool(key, true);
+          }
       ),
     ];
   }
@@ -615,7 +677,7 @@ class StartPageState extends State<StartPage> {
                        )
                     : _menuMode == MenuMode.More
                     ? _buildCell(l10n.startMenu_achievements, 1, icon: Icons.leaderboard,
-                    clickHandler: () => _showAchievementDialog())
+                    clickHandler: () => _showAchievementDialog(() => setState(() {})))
                     : _buildEmptyCell(),
 
                 _buildCell(l10n.startMenu_more, 1,
@@ -633,12 +695,19 @@ class StartPageState extends State<StartPage> {
 
             ),
 
-            if (isDebug && gameNotifications.isNotEmpty)
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
-                child: NotificationCarousel(gameNotifications,
-                        (newList) => setState(() => gameNotifications = newList)),
-              ),
+            FutureBuilder(
+                future: _loadNotificationData(),
+                builder: (_, snapshot) {
+                  if (!snapshot.hasError) {
+                    return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        child: NotificationCarousel(
+                            gameNotifications, snapshot.data ?? NotificationData.empty()));
+                  }
+                  else {
+                    return Container();
+                  }
+                }),
 
             Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -719,6 +788,12 @@ class StartPageState extends State<StartPage> {
         ),
       ),
     );
+  }
+
+  Future<NotificationData> _loadNotificationData() async {
+    final properties = await PreferenceService().getStringList(PreferenceService.DATA_NOTIFICATION_PROPS)??[];
+    final allPlayHeaders = await StorageService().loadAllPlayHeaders();
+    return NotificationData(properties, allPlayHeaders);
   }
 
   void _sendMultiPlayInvite(BuildContext context) {
@@ -1056,8 +1131,9 @@ class StartPageState extends State<StartPage> {
     );
   }
 
-  _showAchievementDialog() {
-    SmartDialog.show(builder: (_) {
+  _showAchievementDialog(Function() updateStateHandler) {
+    return SmartDialog.show(
+      builder: (_) {
 
       var filterScope = Scope.All;
 
@@ -1141,8 +1217,10 @@ class StartPageState extends State<StartPage> {
                         ask(l10n.dialog_resetAchievements, l10n, () {
                           _user.achievements.clearAll();
                           StorageService().saveUser(_user);
+                          updateStateHandler();
+
                           SmartDialog.dismiss();
-                          _showAchievementDialog();
+                          _showAchievementDialog(updateStateHandler);
                         });
 
                       },
@@ -1150,7 +1228,9 @@ class StartPageState extends State<StartPage> {
                   OutlinedButton(
                       style: OutlinedButton.styleFrom(
                           foregroundColor: Colors.lightGreenAccent),
-                      onPressed: () => SmartDialog.dismiss(),
+                      onPressed: () {
+                        SmartDialog.dismiss();
+                      },
                       child: Text(l10n.close)),
                 ],
               ),
@@ -1550,7 +1630,7 @@ class StartPageState extends State<StartPage> {
           borderRadius: BorderRadius.circular(24),
       ),
       child: GestureDetector(
-        onTap: () => _showAchievementDialog(),
+        onTap: () => _showLegendDialog(currentLevel, overallScore),
         child: Text(
             style: TextStyle(fontSize: 24,
                 fontWeight: FontWeight.w500,
@@ -1632,6 +1712,8 @@ class StartPageState extends State<StartPage> {
                             fontStyle: FontStyle.italic))),
               );
   }
+
+  bool _userHasToTakeAction(List<PlayHeader> allPlayHeaders) => allPlayHeaders.any((header) => header.state.group == PlayStateGroup.TakeAction);
 
 }
 

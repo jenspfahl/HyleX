@@ -1,46 +1,119 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
+import 'package:hyle_x/model/play.dart';
+import 'package:hyle_x/service/PreferenceService.dart';
 
 class GameNotification {
+  final String key;
   final String message;
   final IconData icon;
   final Color color;
-  final Function()? handler;
+  final bool Function(NotificationData data, String key) showWhen;
+  final bool Function(NotificationData data, String key)? clickHandler;
+  final Function(NotificationData data, String key)? discardHandler;
   GameNotification({
+    required this.key,
     required this.message,
     required this.icon,
     required this.color,
-    this.handler
+    required this.showWhen,
+    this.clickHandler,
+    this.discardHandler
   });
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is GameNotification &&
+          runtimeType == other.runtimeType &&
+          key == other.key;
+
+  @override
+  int get hashCode => key.hashCode;
+}
+
+class NotificationData {
+  
+  Map<String, String> _map = HashMap();
+  List<PlayHeader> allPlayHeaders = [];
+
+  NotificationData.empty();
+  
+  NotificationData(List<String> properties, this.allPlayHeaders) {
+    properties
+        .map((line) => line.split("="))
+        .forEach((split) => _map[split.first] = split.last);
+  }
+
+  String getString(String key) {
+    return _map[key] ?? "";
+  }
+
+  bool getBool(String key) {
+    return getString(key) == "true";
+  }
+
+  int getInt(String key) {
+    return int.tryParse(getString(key)) ?? 0;
+  }
+
+  void setString(String key, String value) {
+    _map[key] = value;
+    _save();
+  }
+
+  void setBool(String key, bool value) {
+    setString(key, value ? "true" : "false");
+  }
+
+  void setInt(String key, int value) {
+    setString(key, value.toString());
+  }
+
+  _save() {
+    final asList = _map.entries
+        .map((mapEntry) => mapEntry.key + "=" + mapEntry.value)
+        .toList();
+    PreferenceService().setStringList(PreferenceService.DATA_NOTIFICATION_PROPS, asList);
+  }
+
+
 }
 
 class NotificationCarousel extends StatefulWidget {
 
   final List<GameNotification> notifications;
-  final ValueChanged<List<GameNotification>> notificationListChanged;
+  final NotificationData data;
 
-  NotificationCarousel(this.notifications, this.notificationListChanged);
+  NotificationCarousel(this.notifications, this.data);
 
   @override
-  State<NotificationCarousel> createState() => _NotificationCarouselState(notifications);
+  State<NotificationCarousel> createState() => _NotificationCarouselState();
 }
 
 class _NotificationCarouselState extends State<NotificationCarousel> {
 
   final PageController _pageController = PageController(viewportFraction: 0.9);
   int _currentPage = 0;
-  final List<GameNotification> _notifications;
+  final Set<GameNotification> _hiddenNotifications = {};
 
-  _NotificationCarouselState(this._notifications);
+  _NotificationCarouselState();
 
   @override
   Widget build(BuildContext context) {
+    final visibleNotifications = widget.notifications
+      .where((n) => !_hiddenNotifications.contains(n))
+      .where((n) => n.showWhen(widget.data, n.key))
+      .toList();
+
     return Column(
       children: [
         SizedBox(
-          height: 60,
+          height: visibleNotifications.isNotEmpty ? 60 : 0,
           child: PageView.builder(
             controller: _pageController,
-            itemCount: _notifications.length,
+            itemCount: visibleNotifications.length,
             scrollDirection: Axis.horizontal,
             onPageChanged: (index) {
               setState(() {
@@ -48,17 +121,17 @@ class _NotificationCarouselState extends State<NotificationCarousel> {
               });
             },
             itemBuilder: (context, index) {
-              return _buildNotificationCard(_notifications[index]);
+              return _buildNotificationCard(visibleNotifications[index]);
             },
           ),
         ),
-        if (_notifications.length > 1)
+        if (visibleNotifications.length > 1)
           const SizedBox(height: 10),
-        if (_notifications.length > 1)
+        if (visibleNotifications.length > 1)
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: List.generate(
-              _notifications.length,
+              visibleNotifications.length,
               (index) => Container(
                 width: 8,
                 height: 8,
@@ -75,11 +148,12 @@ class _NotificationCarouselState extends State<NotificationCarousel> {
   }
 
   Widget _buildNotificationCard(GameNotification notification) {
+    var borderRadius = BorderRadius.circular(15);
     return Dismissible(
       key: Key(notification.message),
       background: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: borderRadius,
           color: Colors.red,
         ),
         alignment: Alignment.center,
@@ -88,57 +162,74 @@ class _NotificationCarouselState extends State<NotificationCarousel> {
       ),
       direction: DismissDirection.vertical,
       onDismissed: (direction) {
-        setState(() {
-          _notifications.remove(notification);
-          widget.notificationListChanged(_notifications);
-        });
+        _hideNotification(notification);
+        if (notification.discardHandler != null) {
+          notification.discardHandler!(widget.data, notification.key);
+        }
       },
-      child: Card(
-        elevation: 4,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: GestureDetector(
-          onTap: notification.handler != null
-              ? () {
-                  notification.handler!();
-                  setState(() {
-                    _notifications.remove(notification);
-                    widget.notificationListChanged(_notifications);
-                  });
-                }
-              : null,
+      child: SizedBox(
+        height: 80,
+        child: Card(
+          elevation: 3,
+          shape: RoundedRectangleBorder(
+            borderRadius: borderRadius,
+          ),
           child: Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
-           //   color: notification.color.withOpacity(0.2),
+              borderRadius: borderRadius,
               gradient: LinearGradient(
-                colors: [notification.color.withOpacity(0.2), notification.color.withOpacity(0.8)],
+                colors: [notification.color.withOpacity(0.2), notification.color.withOpacity(0.1)],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
             ),
             child: Row(
               children: [
-                Icon(notification.icon, color: notification.color),
-                const SizedBox(width: 8),
                 Expanded(
-                  child: Text(
-                    notification.message,
-                    softWrap: true,
-                    style: const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  child: GestureDetector(
+                    onTap: notification.clickHandler != null ? () {
+                      final hideIt = notification.clickHandler!(widget.data, notification.key);
+                      if (hideIt) {
+                        _hideNotification(notification);
+                      }
+                    } : null,
+                    child: Row(children: [
+                      Icon(notification.icon, color: notification.color),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          notification.message,
+                          softWrap: true,
+                          style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ]),
                   ),
                 ),
+                GestureDetector(
+                    onTap: () {
+                      _hideNotification(notification);
+                      if (notification.discardHandler != null) {
+                        notification.discardHandler!(widget.data, notification.key);
+                      }
+                    },
+                    child: Icon(Icons.close, color: notification.color)),
               ],
             ),
           ),
         ),
       ),
     );
+  }
+
+  void _hideNotification(GameNotification notification) {
+    setState(() {
+      _hiddenNotifications.add(notification);
+    });
   }
 
   @override
