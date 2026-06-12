@@ -9,9 +9,9 @@ class GameNotification {
   final String message;
   final IconData icon;
   final Color color;
-  final bool Function(NotificationData data, String key) showWhen;
-  final bool Function(NotificationData data, String key)? clickHandler;
-  final Function(NotificationData data, String key)? discardHandler;
+  final bool Function(NotificationData data, String baseKey) showWhen;
+  final bool Function(NotificationData data, String baseKey)? clickHandler;
+  final Function(NotificationData data, String baseKey)? discardHandler;
   GameNotification({
     required this.key,
     required this.message,
@@ -44,37 +44,40 @@ class NotificationData {
     properties
         .map((line) => line.split("="))
         .forEach((split) => _map[split.first] = split.last);
+    debugPrint("Load notification props: $properties");
+
   }
 
-  String getString(String key) {
-    return _map[key] ?? "";
+  String getString(String baseKey, String subKey) {
+    return _map["$baseKey/$subKey"] ?? "";
   }
 
-  bool getBool(String key) {
-    return getString(key) == "true";
+  bool getBool(String baseKey, String subKey) {
+    return getString(baseKey, subKey) == "true";
   }
 
-  int getInt(String key) {
-    return int.tryParse(getString(key)) ?? 0;
+  int getInt(String baseKey, String subKey) {
+    return int.tryParse(getString(baseKey, subKey)) ?? 0;
   }
 
-  void setString(String key, String value) {
-    _map[key] = value;
+  void setString(String baseKey, String subKey, String value) {
+    _map["$baseKey/$subKey"] = value;
     _save();
   }
 
-  void setBool(String key, bool value) {
-    setString(key, value ? "true" : "false");
+  void setBool(String baseKey, String subKey, bool value) {
+    setString(baseKey, subKey, value ? "true" : "false");
   }
 
-  void setInt(String key, int value) {
-    setString(key, value.toString());
+  void setInt(String baseKey, String subKey, int value) {
+    setString(baseKey, subKey, value.toString());
   }
 
   _save() {
     final asList = _map.entries
         .map((mapEntry) => mapEntry.key + "=" + mapEntry.value)
         .toList();
+    debugPrint("Save notification props: $asList");
     PreferenceService().setStringList(PreferenceService.DATA_NOTIFICATION_PROPS, asList);
   }
 

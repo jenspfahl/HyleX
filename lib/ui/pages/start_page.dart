@@ -119,20 +119,20 @@ class StartPageState extends State<StartPage> {
           message: "I am new, please tell me the game rules!",
           icon: CupertinoIcons.question_circle_fill,
           color: getColorFromIdx(1),
-          showWhen: (data, key) {
-            final shown = data.getBool(key);
+          showWhen: (data, baseKey) {
+            final shown = data.getBool(baseKey, "shown");
             return !shown && _user.achievements.getOverallGameCount(Scope.All) <= 1;
           },
-          clickHandler: (data, key) {
-            data.setBool(key, true);
+          clickHandler: (data, baseKey) {
+            data.setBool(baseKey, "shown", true);
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) {
                   return Intro();
                 }));
             return true;
           },
-          discardHandler: (data, key) {
-            data.setBool(key, true);
+          discardHandler: (data, baseKey) {
+            data.setBool(baseKey, "shown", true);
           }
       ),
       GameNotification(
@@ -140,13 +140,17 @@ class StartPageState extends State<StartPage> {
           message: "You stepped one level up! Congrats!",
           icon: Icons.plus_one,
           color: getColorFromIdx(2),
-          showWhen: (data, key) {
-            final shownAtLevel = data.getInt(key);
+          showWhen: (data, baseKey) {
+            final shownAtLevel = data.getInt(baseKey, "shownAtLevel");
             final currentLevel = _user.achievements.getCurrentLevel();
-            return currentLevel > 1 && currentLevel > shownAtLevel;
+            final shownAtGameCount = data.getInt(baseKey, "shownAtGameCount");
+            final currentGameCount = _user.achievements.getOverallGameCount(Scope.All);
+
+            return currentLevel > 1 && currentLevel > shownAtLevel && currentGameCount > shownAtGameCount;
           },
-          discardHandler: (data, key) {
-            data.setInt(key, _user.achievements.getCurrentLevel());
+          discardHandler: (data, baseKey) {
+            data.setInt(baseKey, "shownAtLevel", _user.achievements.getCurrentLevel());
+            data.setInt(baseKey, "shownAtGameCount", _user.achievements.getOverallGameCount(Scope.All).toInt());
           }
       ),
       GameNotification(
@@ -154,21 +158,21 @@ class StartPageState extends State<StartPage> {
           message: "One or more opponents are waiting for you, don't let them wait!",
           icon: MdiIcons.sleep,
           color: getColorFromIdx(4),
-          showWhen: (data, key) {
-            final shownAtMultiplayGameCount = data.getInt(key);
+          showWhen: (data, baseKey) {
+            final shownAtMultiplayGameCount = data.getInt(baseKey, "shownAtMultiplayGameCount");
             final multiplayGameCount = _user.achievements.getOverallGameCount(Scope.Multi);
 
             return (multiplayGameCount == 0 || multiplayGameCount > shownAtMultiplayGameCount) && _userHasToTakeAction(data.allPlayHeaders);
           },
-          clickHandler: (data, key) {
+          clickHandler: (data, baseKey) {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) {
                   return MultiPlayerMatches(_user, key: globalMultiPlayerMatchesKey);
                 })).then((result) => setState(() {}));
             return false;
           },
-          discardHandler: (data, key) {
-            data.setInt(key, _user.achievements.getOverallGameCount(Scope.Multi).toInt());
+          discardHandler: (data, baseKey) {
+            data.setInt(baseKey, "shownAtMultiplayGameCount", _user.achievements.getOverallGameCount(Scope.Multi).toInt());
           }
       ),
       GameNotification(
@@ -176,8 +180,8 @@ class StartPageState extends State<StartPage> {
           message: "Do you like the app? Please rate or star it!",
           icon: MdiIcons.star,
           color: getColorFromIdx(5),
-          showWhen: (data, key) {
-            var shownAtGameCount = data.getInt(key);
+          showWhen: (data, baseKey) {
+            var shownAtGameCount = data.getInt(baseKey, "shownAtGameCount");
             if (shownAtGameCount == 0) shownAtGameCount = 10;
             final overallGameCount = _user.achievements.getOverallGameCount(Scope.All);
 
@@ -188,14 +192,14 @@ class StartPageState extends State<StartPage> {
 
             return overallGameCount >= shownAtGameCount;
           },
-          clickHandler: (data, key) {
+          clickHandler: (data, baseKey) {
             // if we assume the user rated, we will never ask again
-            data.setInt(key, 0x7FFFFFFFFFFFFFFF);
+            data.setInt(baseKey, "shownAtGameCount", 0x7FFFFFFFFFFFFFFF);
             launchUrlString(HOMEPAGE_SCHEME + GITHUB_HOMEPAGE + GITHUB_HOMEPAGE_PATH, mode: LaunchMode.externalApplication);
             return true;
           },
-          discardHandler: (data, key) {
-            data.setInt(key, _user.achievements.getOverallGameCount(Scope.All).toInt() * 2);
+          discardHandler: (data, baseKey) {
+            data.setInt(baseKey, "shownAtGameCount", (_user.achievements.getOverallGameCount(Scope.All).toInt() * 2) + 10);
           }
       ),
       GameNotification(
@@ -203,19 +207,19 @@ class StartPageState extends State<StartPage> {
           message: "Tired of playing alone? Invite a friend to a multiplay match!",
           icon: Icons.near_me,
           color: getColorFromIdx(3),
-          showWhen: (data, key) {
-            final shown = data.getBool(key);
+          showWhen: (data, baseKey) {
+            final shown = data.getBool(baseKey, "shown");
             return !shown
                 && _user.achievements.getOverallGameCount(Scope.Single) >= 15
                 && _user.achievements.getOverallGameCount(Scope.Multi) == 0;
           },
-          clickHandler: (data, key) {
-            data.setBool(key, true);
+          clickHandler: (data, baseKey) {
+            data.setBool(baseKey, "shown", true);
             _sendMultiPlayInvite(context);
             return true;
           },
-          discardHandler: (data, key) {
-            data.setBool(key, true);
+          discardHandler: (data, baseKey) {
+            data.setBool(baseKey, "shown", true);
           }
       ),
     ];
