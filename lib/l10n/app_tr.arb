@@ -150,6 +150,15 @@
   "color_teal": "Turkuaz",
   "color_indigo": "Çivit Mavisi",
   "color_purple": "Mor",
+  "color_black": "Siyah",
+
+  "levelState": "Seviye durumu",
+
+  "gameNotification_showRuleKey": "Yeni oyuncuyum – lütfen kuralları açıklayın!",
+  "gameNotification_stepUpLevelKey": "Seviye atladınız! Tebrikler!",
+  "gameNotification_opponentsWaitingKey": "Bir veya daha fazla rakip sizi bekliyor – onları bekletmeyin!",
+  "gameNotification_rateTheAppKey": "Uygulamayı beğendiniz mi? Lütfen puan verin veya yıldız verin!",
+  "gameNotification_inviteOpponentKey": "Yalnız oynamaktan sıkıldınız mı? Bir arkadaşınızı çok oyunculu bir maça davet edin!",
 
   "gameState_gameStarted": "Oyun Başladı",
   "gameState_gameOver": "Oyun Bitti",

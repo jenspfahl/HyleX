@@ -150,6 +150,15 @@
   "color_teal" : "Бирюзовый",
   "color_indigo" : "Индиго",
   "color_purple" : "Фиолетовый",
+  "color_black": "Черный",
+
+  "levelState": "Статус уровня",
+
+  "gameNotification_showRuleKey": "Я новичок – пожалуйста, объясните правила!",
+  "gameNotification_stepUpLevelKey": "Вы повысили уровень! Поздравляем!",
+  "gameNotification_opponentsWaitingKey": "Один или несколько противников ждут вас – не заставляйте их ждать!",
+  "gameNotification_rateTheAppKey": "Вам нравится приложение? Пожалуйста, оцените его или поставьте звезды!",
+  "gameNotification_inviteOpponentKey": "Устали играть в одиночку? Пригласите друга в многопользовательский матч!",
 
   "gameState_gameStarted" : "Игра началась",
   "gameState_gameOver" : "Игра окончена",

@@ -422,10 +422,25 @@ class AppLocalizationsJa extends AppLocalizations {
   String get color_purple => '紫';
 
   @override
-  String get color_black => 'Black';
+  String get color_black => '黒';
 
   @override
-  String get levelState => 'Level State';
+  String get levelState => 'レベルステータス';
+
+  @override
+  String get gameNotification_showRuleKey => '初心者です。ルールを教えてください！';
+
+  @override
+  String get gameNotification_stepUpLevelKey => 'レベルアップしました！おめでとうございます！';
+
+  @override
+  String get gameNotification_opponentsWaitingKey => '1人以上の対戦相手があなたを待っています。待たせないようにしましょう！';
+
+  @override
+  String get gameNotification_rateTheAppKey => 'このアプリは気に入りましたか？評価または星を付けてください！';
+
+  @override
+  String get gameNotification_inviteOpponentKey => '一人でプレイするのに飽きましたか？友達をマルチプレイに招待しましょう！';
 
   @override
   String get gameState_gameStarted => 'ゲーム開始';

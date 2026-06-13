@@ -422,10 +422,25 @@ class AppLocalizationsTr extends AppLocalizations {
   String get color_purple => 'Mor';
 
   @override
-  String get color_black => 'Black';
+  String get color_black => 'Siyah';
 
   @override
-  String get levelState => 'Level State';
+  String get levelState => 'Seviye durumu';
+
+  @override
+  String get gameNotification_showRuleKey => 'Yeni oyuncuyum – lütfen kuralları açıklayın!';
+
+  @override
+  String get gameNotification_stepUpLevelKey => 'Seviye atladınız! Tebrikler!';
+
+  @override
+  String get gameNotification_opponentsWaitingKey => 'Bir veya daha fazla rakip sizi bekliyor – onları bekletmeyin!';
+
+  @override
+  String get gameNotification_rateTheAppKey => 'Uygulamayı beğendiniz mi? Lütfen puan verin veya yıldız verin!';
+
+  @override
+  String get gameNotification_inviteOpponentKey => 'Yalnız oynamaktan sıkıldınız mı? Bir arkadaşınızı çok oyunculu bir maça davet edin!';
 
   @override
   String get gameState_gameStarted => 'Oyun Başladı';

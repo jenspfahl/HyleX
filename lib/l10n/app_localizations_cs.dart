@@ -422,10 +422,25 @@ class AppLocalizationsCs extends AppLocalizations {
   String get color_purple => 'Fialová';
 
   @override
-  String get color_black => 'Black';
+  String get color_black => 'Černá';
 
   @override
-  String get levelState => 'Level State';
+  String get levelState => 'Stav úrovně';
+
+  @override
+  String get gameNotification_showRuleKey => 'Jsem nový – prosím, vysvětlete pravidla!';
+
+  @override
+  String get gameNotification_stepUpLevelKey => 'Dosáhli jste vyšší úrovně! Gratulujeme!';
+
+  @override
+  String get gameNotification_opponentsWaitingKey => 'Čeká na vás jeden nebo více soupeřů – nenechte je čekat!';
+
+  @override
+  String get gameNotification_rateTheAppKey => 'Líbí se vám aplikace? Ohodnoťte ji nebo jí dejte hvězdičky!';
+
+  @override
+  String get gameNotification_inviteOpponentKey => 'Už vás nebaví hrát sami? Pozvěte kamaráda do zápasu pro více hráčů!';
 
   @override
   String get gameState_gameStarted => 'Hra byla zahájena';

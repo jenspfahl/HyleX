@@ -150,6 +150,15 @@
   "color_teal": "Teal (tyrkysová)",
   "color_indigo": "Indigo",
   "color_purple": "Fialová",
+  "color_black": "Černá",
+
+  "levelState": "Stav úrovně",
+
+  "gameNotification_showRuleKey": "Jsem nový – prosím, vysvětlete pravidla!",
+  "gameNotification_stepUpLevelKey": "Dosáhli jste vyšší úrovně! Gratulujeme!",
+  "gameNotification_opponentsWaitingKey": "Čeká na vás jeden nebo více soupeřů – nenechte je čekat!",
+  "gameNotification_rateTheAppKey": "Líbí se vám aplikace? Ohodnoťte ji nebo jí dejte hvězdičky!",
+  "gameNotification_inviteOpponentKey": "Už vás nebaví hrát sami? Pozvěte kamaráda do zápasu pro více hráčů!",
 
   "gameState_gameStarted": "Hra byla zahájena",
   "gameState_gameOver": "Konec hry",

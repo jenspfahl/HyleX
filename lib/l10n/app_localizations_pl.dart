@@ -422,10 +422,25 @@ class AppLocalizationsPl extends AppLocalizations {
   String get color_purple => 'Fioletowy';
 
   @override
-  String get color_black => 'Black';
+  String get color_black => 'Czarny';
 
   @override
-  String get levelState => 'Level State';
+  String get levelState => 'Status poziomu';
+
+  @override
+  String get gameNotification_showRuleKey => 'Jestem nowy – proszę o wyjaśnienie zasad!';
+
+  @override
+  String get gameNotification_stepUpLevelKey => 'Awansowałeś! Gratulacje!';
+
+  @override
+  String get gameNotification_opponentsWaitingKey => 'Jeden lub więcej przeciwników czeka na Ciebie – nie każ im czekać!';
+
+  @override
+  String get gameNotification_rateTheAppKey => 'Podoba Ci się aplikacja? Oceń ją lub daj jej gwiazdki!';
+
+  @override
+  String get gameNotification_inviteOpponentKey => 'Znudziła Ci się gra w pojedynkę? Zaproś znajomego do gry wieloosobowej!';
 
   @override
   String get gameState_gameStarted => 'Gra rozpoczęta';

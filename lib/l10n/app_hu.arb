@@ -150,6 +150,15 @@
   "color_teal": "Teal (türkizkék)",
   "color_indigo": "Indigókék",
   "color_purple": "Lila",
+  "color_black": "Fekete",
+
+  "levelState": "Szint állapota",
+
+  "gameNotification_showRuleKey": "Új vagyok – kérlek magyarázd el a szabályokat!",
+  "gameNotification_stepUpLevelKey": "Szintet léptél! Gratulálunk!",
+  "gameNotification_opponentsWaitingKey": "Egy vagy több ellenfél vár rád – ne várasd meg őket!",
+  "gameNotification_rateTheAppKey": "Tetszik az alkalmazás? Kérlek, értékeld, vagy adj neki csillagokat!",
+  "gameNotification_inviteOpponentKey": "Unod már az egyedül játszást? Hívd meg egy barátodat egy többjátékos meccsre!",
 
   "gameState_gameStarted": "Játék elkezdődött",
   "gameState_gameOver": "Játék vége",

@@ -422,10 +422,25 @@ class AppLocalizationsUk extends AppLocalizations {
   String get color_purple => 'Фолетовий';
 
   @override
-  String get color_black => 'Black';
+  String get color_black => 'Чорний';
 
   @override
-  String get levelState => 'Level State';
+  String get levelState => 'Стан рівня';
+
+  @override
+  String get gameNotification_showRuleKey => 'Я новачок – будь ласка, поясніть правила!';
+
+  @override
+  String get gameNotification_stepUpLevelKey => 'Ви підвищили рівень! Вітаємо!';
+
+  @override
+  String get gameNotification_opponentsWaitingKey => 'Один або декілька суперників чекають на вас – не змушуйте їх чекати!';
+
+  @override
+  String get gameNotification_rateTheAppKey => 'Вам подобається додаток? Будь ласка, оцініть його або поставте зірки!';
+
+  @override
+  String get gameNotification_inviteOpponentKey => 'Набридло грати одному? Запросіть друга до багатокористувацького матчу!';
 
   @override
   String get gameState_gameStarted => 'Гру розпочато';

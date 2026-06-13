@@ -156,6 +156,11 @@
 
   "levelState" : "Levelstatus",
 
+  "gameNotification_showRuleKey": "Ich bin neu – bitte erklär mir die Spielregeln!",
+  "gameNotification_stepUpLevelKey": "Du bist ein Level aufgestiegen! Herzlichen Glückwunsch!",
+  "gameNotification_opponentsWaitingKey": "Ein oder mehrere Gegner warten auf dich – lass sie nicht warten!",
+  "gameNotification_rateTheAppKey": "Gefällt dir die App? Bitte bewerte sie oder vergib Sterne!",
+  "gameNotification_inviteOpponentKey": "Keine Lust mehr, alleine zu spielen? Lade einen Freund zu einem Multiplayer-Match ein!",
 
   "gameState_gameStarted" : "Spielbeginn",
   "gameState_gameOver" : "Spielende",

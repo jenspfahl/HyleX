@@ -897,6 +897,36 @@ abstract class AppLocalizations {
   /// **'Level State'**
   String get levelState;
 
+  /// No description provided for @gameNotification_showRuleKey.
+  ///
+  /// In en, this message translates to:
+  /// **'I am new, please tell me the game rules!'**
+  String get gameNotification_showRuleKey;
+
+  /// No description provided for @gameNotification_stepUpLevelKey.
+  ///
+  /// In en, this message translates to:
+  /// **'You stepped one level up! Congrats!'**
+  String get gameNotification_stepUpLevelKey;
+
+  /// No description provided for @gameNotification_opponentsWaitingKey.
+  ///
+  /// In en, this message translates to:
+  /// **'One or more opponents are waiting for you, don\'t let them wait!'**
+  String get gameNotification_opponentsWaitingKey;
+
+  /// No description provided for @gameNotification_rateTheAppKey.
+  ///
+  /// In en, this message translates to:
+  /// **'Do you like the app? Please rate or star it!'**
+  String get gameNotification_rateTheAppKey;
+
+  /// No description provided for @gameNotification_inviteOpponentKey.
+  ///
+  /// In en, this message translates to:
+  /// **'Tired of playing alone? Invite a friend to a multiplay match!'**
+  String get gameNotification_inviteOpponentKey;
+
   /// No description provided for @gameState_gameStarted.
   ///
   /// In en, this message translates to:

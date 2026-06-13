@@ -422,10 +422,25 @@ class AppLocalizationsHe extends AppLocalizations {
   String get color_purple => 'סגול';
 
   @override
-  String get color_black => 'Black';
+  String get color_black => 'שחור';
 
   @override
-  String get levelState => 'Level State';
+  String get levelState => 'סטטוס רמה';
+
+  @override
+  String get gameNotification_showRuleKey => 'אני חדש - אנא הסבר את החוקים!';
+
+  @override
+  String get gameNotification_stepUpLevelKey => 'עלית רמה! מזל טוב!';
+
+  @override
+  String get gameNotification_opponentsWaitingKey => 'יריב אחד או יותר מחכים לך - אל תתנו להם לחכות!';
+
+  @override
+  String get gameNotification_rateTheAppKey => 'האם אתה אוהב את האפליקציה? אנא דרג אותה או תן לה כוכבים!';
+
+  @override
+  String get gameNotification_inviteOpponentKey => 'עייף לשחק לבד? הזמן חבר למשחק מרובה משתתפים!';
 
   @override
   String get gameState_gameStarted => 'המשחק התחיל';

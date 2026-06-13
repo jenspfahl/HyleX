@@ -150,6 +150,15 @@
   "color_teal": "Morski (Turkusowy)",
   "color_indigo": "Indygo",
   "color_purple": "Fioletowy",
+  "color_black": "Czarny",
+
+  "levelState": "Status poziomu",
+
+  "gameNotification_showRuleKey": "Jestem nowy – proszę o wyjaśnienie zasad!",
+  "gameNotification_stepUpLevelKey": "Awansowałeś! Gratulacje!",
+  "gameNotification_opponentsWaitingKey": "Jeden lub więcej przeciwników czeka na Ciebie – nie każ im czekać!",
+  "gameNotification_rateTheAppKey": "Podoba Ci się aplikacja? Oceń ją lub daj jej gwiazdki!",
+  "gameNotification_inviteOpponentKey": "Znudziła Ci się gra w pojedynkę? Zaproś znajomego do gry wieloosobowej!",
 
   "gameState_gameStarted": "Gra rozpoczęta",
   "gameState_gameOver": "Koniec gry",

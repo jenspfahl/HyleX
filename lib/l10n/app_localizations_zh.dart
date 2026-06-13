@@ -422,10 +422,25 @@ class AppLocalizationsZh extends AppLocalizations {
   String get color_purple => '紫';
 
   @override
-  String get color_black => 'Black';
+  String get color_black => '黑色';
 
   @override
-  String get levelState => 'Level State';
+  String get levelState => '等级状态';
+
+  @override
+  String get gameNotification_showRuleKey => '我是新手，请解释一下规则！';
+
+  @override
+  String get gameNotification_stepUpLevelKey => '你升级了！恭喜！';
+
+  @override
+  String get gameNotification_opponentsWaitingKey => '一个或多个对手正在等你——别让他们久等！';
+
+  @override
+  String get gameNotification_rateTheAppKey => '你喜欢这款应用吗？请给它评分或打星！';
+
+  @override
+  String get gameNotification_inviteOpponentKey => '不想一个人玩？邀请好友来一场多人游戏吧！';
 
   @override
   String get gameState_gameStarted => '游戏开始';

@@ -422,10 +422,25 @@ class AppLocalizationsRu extends AppLocalizations {
   String get color_purple => 'Фиолетовый';
 
   @override
-  String get color_black => 'Black';
+  String get color_black => 'Черный';
 
   @override
-  String get levelState => 'Level State';
+  String get levelState => 'Статус уровня';
+
+  @override
+  String get gameNotification_showRuleKey => 'Я новичок – пожалуйста, объясните правила!';
+
+  @override
+  String get gameNotification_stepUpLevelKey => 'Вы повысили уровень! Поздравляем!';
+
+  @override
+  String get gameNotification_opponentsWaitingKey => 'Один или несколько противников ждут вас – не заставляйте их ждать!';
+
+  @override
+  String get gameNotification_rateTheAppKey => 'Вам нравится приложение? Пожалуйста, оцените его или поставьте звезды!';
+
+  @override
+  String get gameNotification_inviteOpponentKey => 'Устали играть в одиночку? Пригласите друга в многопользовательский матч!';
 
   @override
   String get gameState_gameStarted => 'Игра началась';

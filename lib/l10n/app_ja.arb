@@ -150,6 +150,15 @@
   "color_teal": "ティール（青緑）",
   "color_indigo": "インディゴ",
   "color_purple": "紫",
+  "color_black": "黒",
+
+  "levelState": "レベルステータス",
+
+  "gameNotification_showRuleKey": "初心者です。ルールを教えてください！",
+  "gameNotification_stepUpLevelKey": "レベルアップしました！おめでとうございます！",
+  "gameNotification_opponentsWaitingKey": "1人以上の対戦相手があなたを待っています。待たせないようにしましょう！",
+  "gameNotification_rateTheAppKey": "このアプリは気に入りましたか？評価または星を付けてください！",
+  "gameNotification_inviteOpponentKey": "一人でプレイするのに飽きましたか？友達をマルチプレイに招待しましょう！",
 
   "gameState_gameStarted": "ゲーム開始",
   "gameState_gameOver": "ゲーム終了",

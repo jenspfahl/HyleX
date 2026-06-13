@@ -422,10 +422,25 @@ class AppLocalizationsHu extends AppLocalizations {
   String get color_purple => 'Lila';
 
   @override
-  String get color_black => 'Black';
+  String get color_black => 'Fekete';
 
   @override
-  String get levelState => 'Level State';
+  String get levelState => 'Szint állapota';
+
+  @override
+  String get gameNotification_showRuleKey => 'Új vagyok – kérlek magyarázd el a szabályokat!';
+
+  @override
+  String get gameNotification_stepUpLevelKey => 'Szintet léptél! Gratulálunk!';
+
+  @override
+  String get gameNotification_opponentsWaitingKey => 'Egy vagy több ellenfél vár rád – ne várasd meg őket!';
+
+  @override
+  String get gameNotification_rateTheAppKey => 'Tetszik az alkalmazás? Kérlek, értékeld, vagy adj neki csillagokat!';
+
+  @override
+  String get gameNotification_inviteOpponentKey => 'Unod már az egyedül játszást? Hívd meg egy barátodat egy többjátékos meccsre!';
 
   @override
   String get gameState_gameStarted => 'Játék elkezdődött';

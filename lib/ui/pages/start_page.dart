@@ -116,7 +116,7 @@ class StartPageState extends State<StartPage> {
     gameNotifications = [
       GameNotification(
           key: "showRuleKey",
-          message: "I am new, please tell me the game rules!",
+          message: l10n.gameNotification_showRuleKey,
           icon: CupertinoIcons.question_circle_fill,
           color: getColorFromIdx(1),
           showWhen: (data, baseKey) {
@@ -137,7 +137,7 @@ class StartPageState extends State<StartPage> {
       ),
       GameNotification(
           key: "stepUpLevelKey",
-          message: "You stepped one level up! Congrats!",
+          message: l10n.gameNotification_stepUpLevelKey,
           icon: Icons.plus_one,
           color: getColorFromIdx(2),
           showWhen: (data, baseKey) {
@@ -152,7 +152,7 @@ class StartPageState extends State<StartPage> {
       ),
       GameNotification(
           key: "opponentsWaitingKey",
-          message: "One or more opponents are waiting for you, don't let them wait!",
+          message: l10n.gameNotification_opponentsWaitingKey,
           icon: MdiIcons.sleep,
           color: getColorFromIdx(4),
           showWhen: (data, baseKey) {
@@ -174,7 +174,7 @@ class StartPageState extends State<StartPage> {
       ),
       GameNotification(
           key: "rateTheAppKey",
-          message: "Do you like the app? Please rate or star it!",
+          message: l10n.gameNotification_rateTheAppKey,
           icon: MdiIcons.star,
           color: getColorFromIdx(5),
           showWhen: (data, baseKey) {
@@ -201,7 +201,7 @@ class StartPageState extends State<StartPage> {
       ),
       GameNotification(
           key: "inviteOpponentKey",
-          message: "Tired of playing alone? Invite a friend to a multiplay match!",
+          message: l10n.gameNotification_inviteOpponentKey,
           icon: Icons.near_me,
           color: getColorFromIdx(3),
           showWhen: (data, baseKey) {

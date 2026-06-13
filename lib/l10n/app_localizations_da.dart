@@ -422,10 +422,25 @@ class AppLocalizationsDa extends AppLocalizations {
   String get color_purple => 'Lilla';
 
   @override
-  String get color_black => 'Black';
+  String get color_black => 'Sort';
 
   @override
-  String get levelState => 'Level State';
+  String get levelState => 'Niveaustatus';
+
+  @override
+  String get gameNotification_showRuleKey => 'Jeg er ny – forklar venligst reglerne!';
+
+  @override
+  String get gameNotification_stepUpLevelKey => 'Du er steget i niveau! Tillykke!';
+
+  @override
+  String get gameNotification_opponentsWaitingKey => 'En eller flere modstandere venter på dig – lad dem ikke vente!';
+
+  @override
+  String get gameNotification_rateTheAppKey => 'Kan du lide appen? Bedøm den venligst eller giv den stjerner!';
+
+  @override
+  String get gameNotification_inviteOpponentKey => 'Træt af at spille alene? Inviter en ven til en multiplayer-kamp!';
 
   @override
   String get gameState_gameStarted => 'Spillet er startet';

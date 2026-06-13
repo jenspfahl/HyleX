@@ -150,6 +150,15 @@
   "color_teal" : "Turchese",
   "color_indigo" : "Indaco",
   "color_purple" : "Viola",
+  "color_black": "Nero",
+
+  "levelState": "Stato del livello",
+
+  "gameNotification_showRuleKey": "Sono un nuovo giocatore, per favore spiegami le regole!",
+  "gameNotification_stepUpLevelKey": "Sei salito di livello! Congratulazioni!",
+  "gameNotification_opponentsWaitingKey": "Uno o più avversari ti stanno aspettando, non farli aspettare!",
+  "gameNotification_rateTheAppKey": "Ti piace l'app? Valutala o assegnale delle stelle!",
+  "gameNotification_inviteOpponentKey": "Stanco di giocare da solo? Invita un amico a una partita multigiocatore!",
 
   "gameState_gameStarted" : "Inizio partita",
   "gameState_gameOver" : "Fine partita",

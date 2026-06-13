@@ -422,10 +422,25 @@ class AppLocalizationsAr extends AppLocalizations {
   String get color_purple => 'بنفسجي';
 
   @override
-  String get color_black => 'Black';
+  String get color_black => 'أسود';
 
   @override
-  String get levelState => 'Level State';
+  String get levelState => 'حالة المستوى';
+
+  @override
+  String get gameNotification_showRuleKey => 'أنا جديد - يرجى شرح القواعد!';
+
+  @override
+  String get gameNotification_stepUpLevelKey => 'لقد ارتقيت في المستوى! تهانينا!';
+
+  @override
+  String get gameNotification_opponentsWaitingKey => 'هناك خصم أو أكثر ينتظرونك - لا تجعلهم ينتظرون!';
+
+  @override
+  String get gameNotification_rateTheAppKey => 'هل أعجبك التطبيق؟ يرجى تقييمه أو منحه نجومًا!';
+
+  @override
+  String get gameNotification_inviteOpponentKey => 'هل مللت من اللعب بمفردك؟ ادعُ صديقًا إلى مباراة متعددة اللاعبين!';
 
   @override
   String get gameState_gameStarted => 'بدأت اللعبة';

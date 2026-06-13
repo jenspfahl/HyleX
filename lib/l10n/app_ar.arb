@@ -150,6 +150,15 @@
   "color_teal" : "تركواز",
   "color_indigo" : "نيلي",
   "color_purple" : "بنفسجي",
+  "color_black": "أسود",
+
+  "levelState": "حالة المستوى",
+
+  "gameNotification_showRuleKey": "أنا جديد - يرجى شرح القواعد!",
+  "gameNotification_stepUpLevelKey": "لقد ارتقيت في المستوى! تهانينا!",
+  "gameNotification_opponentsWaitingKey": "هناك خصم أو أكثر ينتظرونك - لا تجعلهم ينتظرون!",
+  "gameNotification_rateTheAppKey": "هل أعجبك التطبيق؟ يرجى تقييمه أو منحه نجومًا!",
+  "gameNotification_inviteOpponentKey": "هل مللت من اللعب بمفردك؟ ادعُ صديقًا إلى مباراة متعددة اللاعبين!",
 
   "gameState_gameStarted" : "بدأت اللعبة",
   "gameState_gameOver" : "انتهت اللعبة",

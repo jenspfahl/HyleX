@@ -150,6 +150,15 @@
   "color_teal": "Бірюзовий",
   "color_indigo": "Індиго",
   "color_purple": "Фолетовий",
+  "color_black": "Чорний",
+
+  "levelState": "Стан рівня",
+
+  "gameNotification_showRuleKey": "Я новачок – будь ласка, поясніть правила!",
+  "gameNotification_stepUpLevelKey": "Ви підвищили рівень! Вітаємо!",
+  "gameNotification_opponentsWaitingKey": "Один або декілька суперників чекають на вас – не змушуйте їх чекати!",
+  "gameNotification_rateTheAppKey": "Вам подобається додаток? Будь ласка, оцініть його або поставте зірки!",
+  "gameNotification_inviteOpponentKey": "Набридло грати одному? Запросіть друга до багатокористувацького матчу!",
 
   "gameState_gameStarted": "Гру розпочато",
   "gameState_gameOver": "Кінець гри",

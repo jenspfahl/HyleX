@@ -150,6 +150,15 @@
   "color_teal" : "蓝绿",
   "color_indigo" : "靛蓝",
   "color_purple" : "紫",
+  "color_black": "黑色",
+
+  "levelState": "等级状态",
+
+  "gameNotification_showRuleKey": "我是新手，请解释一下规则！",
+  "gameNotification_stepUpLevelKey": "你升级了！恭喜！",
+  "gameNotification_opponentsWaitingKey": "一个或多个对手正在等你——别让他们久等！",
+  "gameNotification_rateTheAppKey": "你喜欢这款应用吗？请给它评分或打星！",
+  "gameNotification_inviteOpponentKey": "不想一个人玩？邀请好友来一场多人游戏吧！",
 
   "gameState_gameStarted" : "游戏开始",
   "gameState_gameOver" : "游戏结束",

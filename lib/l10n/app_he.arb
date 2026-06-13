@@ -150,6 +150,15 @@
   "color_teal": "טורקיז",
   "color_indigo": "אינדיגו",
   "color_purple": "סגול",
+  "color_black": "שחור",
+
+  "levelState": "סטטוס רמה",
+
+  "gameNotification_showRuleKey": "אני חדש - אנא הסבר את החוקים!",
+  "gameNotification_stepUpLevelKey": "עלית רמה! מזל טוב!",
+  "gameNotification_opponentsWaitingKey": "יריב אחד או יותר מחכים לך - אל תתנו להם לחכות!",
+  "gameNotification_rateTheAppKey": "האם אתה אוהב את האפליקציה? אנא דרג אותה או תן לה כוכבים!",
+  "gameNotification_inviteOpponentKey": "עייף לשחק לבד? הזמן חבר למשחק מרובה משתתפים!",
 
   "gameState_gameStarted": "המשחק התחיל",
   "gameState_gameOver": "סוף המשחק",
