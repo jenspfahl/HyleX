@@ -125,6 +125,7 @@ class _NotificationCarouselState extends State<NotificationCarousel> {
     // clear timestamps for invisible notifications
     widget.notifications
         .where((n) => !visibleNotifications.contains(n))
+        .where((n) => n.timestamp > 0)
         .forEach((n) {
           n.timestamp = 0;
           widget.data.setInt(n.key, "timestamp", 0);

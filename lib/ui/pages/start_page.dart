@@ -113,6 +113,9 @@ class StartPageState extends State<StartPage> {
       ReceiveSharingIntent.instance.reset();
     });
 
+  }
+
+  List<GameNotification> _createGameNotifications() {
     gameNotifications = [
       GameNotification(
           key: "showRuleKey",
@@ -220,6 +223,7 @@ class StartPageState extends State<StartPage> {
           }
       ),
     ];
+    return gameNotifications;
   }
 
   void _readAndParseSharedText(List<SharedMediaFile> value) {
@@ -703,7 +707,9 @@ class StartPageState extends State<StartPage> {
                     return Padding(
                         padding: const EdgeInsets.symmetric(vertical: 8.0),
                         child: NotificationCarousel(
-                            gameNotifications, snapshot.data ?? NotificationData.empty()));
+                            gameNotifications.isEmpty ? _createGameNotifications() : gameNotifications
+                            , 
+                            snapshot.data ?? NotificationData.empty()));
                   }
                   else {
                     return Container();
