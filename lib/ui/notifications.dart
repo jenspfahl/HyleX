@@ -134,7 +134,7 @@ class _NotificationCarouselState extends State<NotificationCarousel> {
     return Column(
       children: [
         SizedBox(
-          height: visibleNotifications.isNotEmpty ? 60 : 0,
+          height: visibleNotifications.isNotEmpty ? 80 : 0,
           child: PageView.builder(
             controller: _pageController,
             itemCount: visibleNotifications.length,
@@ -191,59 +191,56 @@ class _NotificationCarouselState extends State<NotificationCarousel> {
           notification.discardHandler!(widget.data, notification.key);
         }
       },
-      child: SizedBox(
-        height: 80,
-        child: Card(
-          elevation: 3,
-          shape: RoundedRectangleBorder(
+      child: Card(
+        elevation: 3,
+        shape: RoundedRectangleBorder(
+          borderRadius: borderRadius,
+        ),
+        child: Container(
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
             borderRadius: borderRadius,
-          ),
-          child: Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              borderRadius: borderRadius,
-              gradient: LinearGradient(
-                colors: [notification.color.withOpacity(0.2), notification.color.withOpacity(0.1)],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
+            gradient: LinearGradient(
+              colors: [notification.color.withOpacity(0.2), notification.color.withOpacity(0.1)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
             ),
-            child: Row(
-              children: [
-                Expanded(
-                  child: GestureDetector(
-                    onTap: notification.clickHandler != null ? () {
-                      final hideIt = notification.clickHandler!(widget.data, notification.key);
-                      if (hideIt) {
-                        _hideNotification(notification);
-                      }
-                    } : null,
-                    child: Row(children: [
-                      Icon(notification.icon, color: notification.color),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: Text(
-                          notification.message,
-                          softWrap: true,
-                          style: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                          ),
+          ),
+          child: Row(
+            children: [
+              Expanded(
+                child: GestureDetector(
+                  onTap: notification.clickHandler != null ? () {
+                    final hideIt = notification.clickHandler!(widget.data, notification.key);
+                    if (hideIt) {
+                      _hideNotification(notification);
+                    }
+                  } : null,
+                  child: Row(children: [
+                    Icon(notification.icon, color: notification.color),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        notification.message,
+                        softWrap: true,
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                    ]),
-                  ),
+                    ),
+                  ]),
                 ),
-                GestureDetector(
-                    onTap: () {
-                      _hideNotification(notification);
-                      if (notification.discardHandler != null) {
-                        notification.discardHandler!(widget.data, notification.key);
-                      }
-                    },
-                    child: Icon(Icons.close, color: notification.color)),
-              ],
-            ),
+              ),
+              GestureDetector(
+                  onTap: () {
+                    _hideNotification(notification);
+                    if (notification.discardHandler != null) {
+                      notification.discardHandler!(widget.data, notification.key);
+                    }
+                  },
+                  child: Icon(Icons.close, color: notification.color)),
+            ],
           ),
         ),
       ),

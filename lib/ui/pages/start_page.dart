@@ -146,7 +146,7 @@ class StartPageState extends State<StartPage> {
           showWhen: (data, baseKey) {
             final shownAtLevel = data.getInt(baseKey, "shownAtLevel");
             final currentLevel = _user.achievements.getCurrentLevel();
-
+    
             return currentLevel > 1 && currentLevel > shownAtLevel;
           },
           discardHandler: (data, baseKey) {
@@ -161,7 +161,7 @@ class StartPageState extends State<StartPage> {
           showWhen: (data, baseKey) {
             final shownAtMultiplayGameCount = data.getInt(baseKey, "shownAtMultiplayGameCount");
             final multiplayGameCount = _user.achievements.getOverallGameCount(Scope.Multi);
-
+    
             return (multiplayGameCount == 0 || multiplayGameCount > shownAtMultiplayGameCount) && _userHasToTakeAction(data.allPlayHeaders);
           },
           clickHandler: (data, baseKey) {
@@ -184,18 +184,26 @@ class StartPageState extends State<StartPage> {
             var shownAtGameCount = data.getInt(baseKey, "shownAtGameCount");
             if (shownAtGameCount == 0) shownAtGameCount = 10;
             final overallGameCount = _user.achievements.getOverallGameCount(Scope.All);
-
+    
             if (shownAtGameCount == 0x7FFFFFFFFFFFFFFF) {
               // indicator to never show it again
               return false;
             }
-
+    
             return overallGameCount >= shownAtGameCount;
           },
           clickHandler: (data, baseKey) {
             // if we assume the user rated, we will never ask again
             data.setInt(baseKey, "shownAtGameCount", 0x7FFFFFFFFFFFFFFF);
-            launchUrlString(HOMEPAGE_SCHEME + GITHUB_HOMEPAGE + GITHUB_HOMEPAGE_PATH, mode: LaunchMode.externalApplication);
+            if (isForPlayStore) {
+              launchUrlString(
+                  PLAY_STORE_URL, mode: LaunchMode.externalApplication);
+            }
+            else {
+              launchUrlString(
+                  HOMEPAGE_SCHEME + GITHUB_HOMEPAGE + GITHUB_HOMEPAGE_PATH,
+                  mode: LaunchMode.externalApplication);
+            }
             return true;
           },
           discardHandler: (data, baseKey) {
