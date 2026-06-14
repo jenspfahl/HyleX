@@ -46,6 +46,7 @@ enum MenuMode {
 }
 
 const PLAY_GROUND = "play_ground";
+final FIVE_DAYS_IN_MILLIS = Duration(days: 5).inMilliseconds;
 
 GlobalKey<StartPageState> globalStartPageKey = GlobalKey();
 
@@ -159,10 +160,10 @@ class StartPageState extends State<StartPage> {
           icon: MdiIcons.sleep,
           color: getColorFromIdx(4),
           showWhen: (data, baseKey) {
-            final shownAtMultiplayGameCount = data.getInt(baseKey, "shownAtMultiplayGameCount");
-            final multiplayGameCount = _user.achievements.getOverallGameCount(Scope.Multi);
+            final shownAtTimestamp = data.getInt(baseKey, "shownAtTimestamp");
+            final currentTimestamp = DateTime.now().millisecondsSinceEpoch;
     
-            return (multiplayGameCount == 0 || multiplayGameCount > shownAtMultiplayGameCount) && _userHasToTakeAction(data.allPlayHeaders);
+            return (shownAtTimestamp + FIVE_DAYS_IN_MILLIS < currentTimestamp) && _userHasToTakeAction(data.allPlayHeaders);
           },
           clickHandler: (data, baseKey) {
             Navigator.push(context,
@@ -172,7 +173,7 @@ class StartPageState extends State<StartPage> {
             return false;
           },
           discardHandler: (data, baseKey) {
-            data.setInt(baseKey, "shownAtMultiplayGameCount", _user.achievements.getOverallGameCount(Scope.Multi).toInt());
+            data.setInt(baseKey, "shownAtTimestamp", DateTime.now().millisecondsSinceEpoch);
           }
       ),
       GameNotification(
