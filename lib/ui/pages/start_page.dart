@@ -163,7 +163,7 @@ class StartPageState extends State<StartPage> {
             final shownAtTimestamp = data.getInt(baseKey, "shownAtTimestamp");
             final currentTimestamp = DateTime.now().millisecondsSinceEpoch;
     
-            return (shownAtTimestamp + FIVE_DAYS_IN_MILLIS < currentTimestamp) && _userHasToTakeAction(data.allPlayHeaders);
+            return (shownAtTimestamp + (isDebug ? 60000 : FIVE_DAYS_IN_MILLIS) < currentTimestamp) && _userHasToTakeAction(data.allPlayHeaders);
           },
           clickHandler: (data, baseKey) {
             Navigator.push(context,

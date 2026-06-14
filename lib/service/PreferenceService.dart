@@ -28,12 +28,13 @@ class PreferenceService {
   static final DATA_CURRENT_PLAY = '${DATA_PLAY_PREFIX}/current';
   static final DATA_CURRENT_PLAY_HEADER = '${DATA_CURRENT_PLAY}/header';
 
-  static final DATA_LOGO_COLOR_H = 'data/logoColor/h';
-  static final DATA_LOGO_COLOR_Y = 'data/logoColor/y';
-  static final DATA_LOGO_COLOR_L = 'data/logoColor/l';
-  static final DATA_LOGO_COLOR_E = 'data/logoColor/e';
+  static final DATA_LOGO_COLOR_PREFIX = 'data/logoColor';
+  static final DATA_LOGO_COLOR_H = '$DATA_LOGO_COLOR_PREFIX/h';
+  static final DATA_LOGO_COLOR_Y = '$DATA_LOGO_COLOR_PREFIX/y';
+  static final DATA_LOGO_COLOR_L = '$DATA_LOGO_COLOR_PREFIX/l';
+  static final DATA_LOGO_COLOR_E = '$DATA_LOGO_COLOR_PREFIX/e';
 
-  static final DATA_NOTIFICATION_PROPS = 'data/notificationProperties/';
+  static final DATA_NOTIFICATION_PROPS = 'data/notificationProperties';
 
   static final PREF_PREFIX = 'pref';
   static final PREF_ANIMATE_MOVES = '$PREF_PREFIX/animateMoves';
@@ -110,7 +111,7 @@ class PreferenceService {
     return prefs.getBool(key);
   }
 
-  Future<List<String>> getKeys(String prefix) async {
+  Future<List<String>> getKeysWithPrefix(String prefix) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
     return prefs.getKeys().where((key) => key.startsWith(prefix)).toList();
