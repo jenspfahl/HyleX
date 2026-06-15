@@ -2,8 +2,6 @@ import 'dart:collection';
 import 'dart:math';
 
 
-import 'package:flutter/cupertino.dart';
-
 import 'common.dart';
 
 enum Scope {All, Single, Multi}
@@ -246,7 +244,6 @@ class Achievements {
     for(int index = LEVEL_THRESHOLDS.length - 1; index >= 0; index--) {
       final threshold = LEVEL_THRESHOLDS[index];
       if (score >= threshold) {
-        debugPrint("$score >= $threshold");
         return index + 1;
       }
     }
