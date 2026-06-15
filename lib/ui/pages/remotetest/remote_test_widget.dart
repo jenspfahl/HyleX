@@ -454,8 +454,10 @@ class _RemoteTestWidgetState extends State<RemoteTestWidget> {
       }
     }
 
-    final firstValue = getValue() ?? allChips.first;
-    setValue(firstValue);
+    final firstValue = getValue() ?? allChips.firstOrNull;
+    if (firstValue != null) {
+      setValue(firstValue);
+    }
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,

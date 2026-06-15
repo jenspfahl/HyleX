@@ -1,0 +1,3 @@
+* add game levels to increase engagement
+* add in-game notifications to inform the user about things
+* more translations

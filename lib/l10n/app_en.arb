@@ -156,8 +156,16 @@
   "color_teal" : "Teal",
   "color_indigo" : "Indigo",
   "color_purple" : "Purple",
-  
-  
+  "color_black" : "Black",
+
+  "levelState" : "Level State",
+
+  "gameNotification_showRuleKey": "I am new, please tell me the game rules!",
+  "gameNotification_stepUpLevelKey": "You stepped one level up! Congrats!",
+  "gameNotification_opponentsWaitingKey": "One or more opponents are waiting for you, don't let them wait!",
+  "gameNotification_rateTheAppKey": "Do you like the app? Please rate or star it!",
+  "gameNotification_inviteOpponentKey": "Tired of playing alone? Invite a friend to a multiplay match!",
+
   "gameState_gameStarted" : "Game started",
   "gameState_gameOver" : "Game over",
   "gameState_gameOverWinner" : "Game over! {who} has won this game!",

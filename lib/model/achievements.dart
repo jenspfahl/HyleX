@@ -20,6 +20,9 @@ class _Data {
 
 class Achievements {
 
+  static final LEVEL_THRESHOLDS = [0, 100, 250, 500, 1000, 2000, 3000, 5000, 10000, 20000, 50000, 100000, 250000, 500000];
+  static final MAX_LEVEL = LEVEL_THRESHOLDS.length;
+
   final _Data allData = _Data();
   final _Data singleData = _Data();
   final _Data multiData = _Data();
@@ -222,6 +225,30 @@ class Achievements {
       _getDataForScope(scope).totalPointsForChaos.update(dimension, (old) => old + points, ifAbsent: () => points);
       _getDataForScope(scope).highScoresForChaos.update(dimension, (old) => max(old, points), ifAbsent: () => points);
     }
+  }
+
+  int getThresholdForLevel(int level) {
+    final index = level - 1;
+    if (index < 0 ) {
+      return LEVEL_THRESHOLDS.first;
+    }
+    if (index >= LEVEL_THRESHOLDS.length) {
+      return LEVEL_THRESHOLDS.last;
+    }
+    return LEVEL_THRESHOLDS[index];
+  }
+
+  int getCurrentLevel() {
+    final score = getOverallScore(Scope.All);
+
+    for(int index = LEVEL_THRESHOLDS.length - 1; index >= 0; index--) {
+      final threshold = LEVEL_THRESHOLDS[index];
+      if (score >= threshold) {
+        return index + 1;
+      }
+    }
+
+    throw Exception("No threshold for score $score");
   }
 
   clearAll() {

@@ -115,7 +115,7 @@ class StorageService {
     if (enableMocking) return Future.value([]);
 
     debugPrint("Load all headers");
-    final keys = await PreferenceService().getKeys(PreferenceService.DATA_PLAY_HEADER_PREFIX);
+    final keys = await PreferenceService().getKeysWithPrefix(PreferenceService.DATA_PLAY_HEADER_PREFIX);
 
     if (keys.isEmpty) {
       return Future.value(<PlayHeader>[]);

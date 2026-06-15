@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:hyle_x/engine/game_engine.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
+import '../l10n/app_localizations.dart';
 import '../model/common.dart';
 import '../model/coordinate.dart';
 import '../model/move.dart';
@@ -230,6 +231,25 @@ Color getColorFromIdx(int i) {
 
   return Color.fromARGB(
       210, r, g, b);
+}
+
+String getColorNameFromIndex(int index, AppLocalizations l10n) {
+  switch(index) {
+    case 0: return l10n.color_red;
+    case 1: return l10n.color_yellow;
+    case 2: return l10n.color_green;
+    case 3: return l10n.color_cyan;
+    case 4: return l10n.color_blue;
+    case 5: return l10n.color_pink;
+    case 6: return l10n.color_grey;
+    case 7: return l10n.color_brown;
+    case 8: return l10n.color_olive;
+    case 9: return l10n.color_moss;
+    case 10: return l10n.color_teal;
+    case 11: return l10n.color_indigo;
+    case 12: return l10n.color_purple;
+    default: return l10n.color_black;
+  }
 }
 
 

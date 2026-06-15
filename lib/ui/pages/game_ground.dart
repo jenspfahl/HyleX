@@ -1024,8 +1024,8 @@ class _HyleXGroundState extends State<HyleXGround> with TickerProviderStateMixin
     return SuperTooltip(
       controller: Tooltips().controlTooltip(tooltipKey),
       onShow: () => Tooltips().hideTooltipLater(tooltipKey),
-      showBarrier: false,
-      hideTooltipOnTap: true,
+      barrierConfig: BarrierConfiguration(show: false),
+      interactionConfig: InteractionConfiguration(hideOnTap: true),
       content: Text(
         "$tooltipPrefix: ${player.getName(l10n)}$secondLine",
         softWrap: true,
@@ -1550,8 +1550,8 @@ class _HyleXGroundState extends State<HyleXGround> with TickerProviderStateMixin
     return SuperTooltip(
         controller: Tooltips().controlTooltip(tooltipKey),
         onShow: () => Tooltips().hideTooltipLater(tooltipKey),
-        showBarrier: false,
-        hideTooltipOnTap: true,
+        barrierConfig: BarrierConfiguration(show: false),
+        interactionConfig: InteractionConfiguration(hideOnTap: true),
         content: Text(
           "$chipText ${entry.chip.getChipName(l10n)}\n${entry.amount} ${l10n.left}",
           softWrap: true,

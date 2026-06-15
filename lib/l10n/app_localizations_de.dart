@@ -422,6 +422,27 @@ class AppLocalizationsDe extends AppLocalizations {
   String get color_purple => 'Lila';
 
   @override
+  String get color_black => 'Schwarz';
+
+  @override
+  String get levelState => 'Levelstatus';
+
+  @override
+  String get gameNotification_showRuleKey => 'Ich bin neu – bitte erklär mir die Spielregeln!';
+
+  @override
+  String get gameNotification_stepUpLevelKey => 'Du bist ein Level aufgestiegen! Herzlichen Glückwunsch!';
+
+  @override
+  String get gameNotification_opponentsWaitingKey => 'Ein oder mehrere Gegner warten auf dich – lass sie nicht warten!';
+
+  @override
+  String get gameNotification_rateTheAppKey => 'Gefällt dir die App? Bitte bewerte sie oder vergib Sterne!';
+
+  @override
+  String get gameNotification_inviteOpponentKey => 'Keine Lust mehr, alleine zu spielen? Lade einen Freund zu einem Multiplayer-Match ein!';
+
+  @override
   String get gameState_gameStarted => 'Spielbeginn';
 
   @override

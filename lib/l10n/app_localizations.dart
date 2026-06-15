@@ -5,8 +5,22 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart' as intl;
 
+import 'app_localizations_ar.dart';
+import 'app_localizations_cs.dart';
+import 'app_localizations_da.dart';
 import 'app_localizations_de.dart';
 import 'app_localizations_en.dart';
+import 'app_localizations_es.dart';
+import 'app_localizations_fr.dart';
+import 'app_localizations_he.dart';
+import 'app_localizations_hu.dart';
+import 'app_localizations_it.dart';
+import 'app_localizations_ja.dart';
+import 'app_localizations_pl.dart';
+import 'app_localizations_ru.dart';
+import 'app_localizations_tr.dart';
+import 'app_localizations_uk.dart';
+import 'app_localizations_zh.dart';
 
 // ignore_for_file: type=lint
 
@@ -91,8 +105,22 @@ abstract class AppLocalizations {
 
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[
+    Locale('ar'),
+    Locale('cs'),
+    Locale('da'),
     Locale('de'),
-    Locale('en')
+    Locale('en'),
+    Locale('es'),
+    Locale('fr'),
+    Locale('he'),
+    Locale('hu'),
+    Locale('it'),
+    Locale('ja'),
+    Locale('pl'),
+    Locale('ru'),
+    Locale('tr'),
+    Locale('uk'),
+    Locale('zh')
   ];
 
   /// No description provided for @yes.
@@ -856,6 +884,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Purple'**
   String get color_purple;
+
+  /// No description provided for @color_black.
+  ///
+  /// In en, this message translates to:
+  /// **'Black'**
+  String get color_black;
+
+  /// No description provided for @levelState.
+  ///
+  /// In en, this message translates to:
+  /// **'Level State'**
+  String get levelState;
+
+  /// No description provided for @gameNotification_showRuleKey.
+  ///
+  /// In en, this message translates to:
+  /// **'I am new, please tell me the game rules!'**
+  String get gameNotification_showRuleKey;
+
+  /// No description provided for @gameNotification_stepUpLevelKey.
+  ///
+  /// In en, this message translates to:
+  /// **'You stepped one level up! Congrats!'**
+  String get gameNotification_stepUpLevelKey;
+
+  /// No description provided for @gameNotification_opponentsWaitingKey.
+  ///
+  /// In en, this message translates to:
+  /// **'One or more opponents are waiting for you, don\'t let them wait!'**
+  String get gameNotification_opponentsWaitingKey;
+
+  /// No description provided for @gameNotification_rateTheAppKey.
+  ///
+  /// In en, this message translates to:
+  /// **'Do you like the app? Please rate or star it!'**
+  String get gameNotification_rateTheAppKey;
+
+  /// No description provided for @gameNotification_inviteOpponentKey.
+  ///
+  /// In en, this message translates to:
+  /// **'Tired of playing alone? Invite a friend to a multiplay match!'**
+  String get gameNotification_inviteOpponentKey;
 
   /// No description provided for @gameState_gameStarted.
   ///
@@ -1863,7 +1933,7 @@ class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> 
   }
 
   @override
-  bool isSupported(Locale locale) => <String>['de', 'en'].contains(locale.languageCode);
+  bool isSupported(Locale locale) => <String>['ar', 'cs', 'da', 'de', 'en', 'es', 'fr', 'he', 'hu', 'it', 'ja', 'pl', 'ru', 'tr', 'uk', 'zh'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
@@ -1874,8 +1944,22 @@ AppLocalizations lookupAppLocalizations(Locale locale) {
 
   // Lookup logic when only language code is specified.
   switch (locale.languageCode) {
+    case 'ar': return AppLocalizationsAr();
+    case 'cs': return AppLocalizationsCs();
+    case 'da': return AppLocalizationsDa();
     case 'de': return AppLocalizationsDe();
     case 'en': return AppLocalizationsEn();
+    case 'es': return AppLocalizationsEs();
+    case 'fr': return AppLocalizationsFr();
+    case 'he': return AppLocalizationsHe();
+    case 'hu': return AppLocalizationsHu();
+    case 'it': return AppLocalizationsIt();
+    case 'ja': return AppLocalizationsJa();
+    case 'pl': return AppLocalizationsPl();
+    case 'ru': return AppLocalizationsRu();
+    case 'tr': return AppLocalizationsTr();
+    case 'uk': return AppLocalizationsUk();
+    case 'zh': return AppLocalizationsZh();
   }
 
   throw FlutterError(

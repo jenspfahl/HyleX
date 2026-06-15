@@ -18,6 +18,10 @@ class BackupRestoreService {
   static final BackupRestoreService _service = BackupRestoreService._internal();
 
   static const extension = "backup";
+  static const PREF_SEPARATOR = ",";
+  static const LIST_SEPARATOR = ";";
+  static const KEY_VALUE_SEPARATOR = "=";
+  static const KEY_VALUE_SEPARATOR_REPLACEMENT = "#";
 
   static const int export_file_magic = 5952965291224;
   static const int export_file_version = 1;
@@ -79,27 +83,24 @@ class BackupRestoreService {
 
       debugPrint("Start writing user ... :" + data);
       debugPrint("Signature:" + signatureBase64);
-
-      final prefKeys = await PreferenceService().getKeys(PreferenceService.PREF_PREFIX);
+      
+      final prefKeys = await PreferenceService().getKeysWithPrefix(PreferenceService.PREF_PREFIX);
+      prefKeys.addAll(await PreferenceService().getKeysWithPrefix(PreferenceService.DATA_LOGO_COLOR_PREFIX));
+      prefKeys.add(PreferenceService.DATA_NOTIFICATION_PROPS);
       debugPrint("prefKeys: $prefKeys");
 
       final sb = StringBuffer();
       for (int i = 0; i < prefKeys.length; i++) {
         final key = prefKeys[i];
-        final value = await PreferenceService().get(key);
-        debugPrint("pref $key value: $value");
-
-        if (sb.isNotEmpty) {
-          sb.write(",");
-        }
-        sb.write("${key.replaceAll("/", "_")}=$value");
+        await _serializePref(key, sb);
       }
 
-      final prefs = sb.toString();
-      debugPrint("prefs: $prefs");
+      final serializedPrefs = sb.toString();
 
-      await dstFile.writeAsString(data + "/" + signatureBase64 + "/" + prefs);
+      debugPrint("serializedPrefs: $serializedPrefs");
 
+      await dstFile.writeAsString(data + "/" + signatureBase64 + "/" + serializedPrefs);
+      
       successHandler(dstFile.path);
 
     } on Exception catch (e) {
@@ -124,7 +125,7 @@ class BackupRestoreService {
           if (split.length < 2 || split.length > 3) throw Exception("Wrong format");
           final data = split[0];
           final signature = split[1];
-          final prefs = split.length> 2 ? split[2] : null;
+          final serializedPrefs = split.length > 2 ? split[2] : null;
 
           final bitBuffer = BitBuffer.fromBase64Compressed(data);
 
@@ -174,19 +175,32 @@ class BackupRestoreService {
             }
           }
 
-          if (prefs != null) {
+          if (serializedPrefs != null) {
             debugPrint("Importing prefs...");
-            final prefsSplit = prefs.split(",");
+            final prefsSplit = serializedPrefs.split(PREF_SEPARATOR);
             for (int i = 0; i < prefsSplit.length; i++) {
               final pref = prefsSplit[i];
               debugPrint("Importing pref $pref...");
-              final keyPair = pref.split("=");
-              if (keyPair.length == 2) {
-                final key = keyPair.first.replaceAll("_", "/");
-                final value = keyPair.last;
+              final keyValuePair = pref.split(KEY_VALUE_SEPARATOR);
+              if (keyValuePair.length == 2) {
+                final key = _unmaskKey(keyValuePair.first);
+                final value = keyValuePair.last;
                 debugPrint("Importing pref  for key $key and value $value ...");
                 if (value == 'true' || value == 'false') {
                   await PreferenceService().setBool(key, value == 'true');
+                }
+                else if (value.contains(LIST_SEPARATOR)) {
+                  // List of Strings
+                  final list = value.split(LIST_SEPARATOR);
+                  final unmaskedList = list
+                      .where((elem) => elem.isNotEmpty)
+                      .map((elem) => _unmaskKey(elem))
+                      .map((elem) => elem.replaceAll(KEY_VALUE_SEPARATOR_REPLACEMENT, KEY_VALUE_SEPARATOR))
+                      .toList();
+                  debugPrint("import list $unmaskedList");
+
+                  await PreferenceService().setStringList(key, unmaskedList);
+
                 }
                 else {
                   final intValue = int.tryParse(value);
@@ -219,6 +233,32 @@ class BackupRestoreService {
       print(e);
     }
   }
+
+
+  Future<void> _serializePref(String key, StringBuffer sb) async {
+    final maskedKey = _maskKey(key);
+    final value = await PreferenceService().get(key);
+    debugPrint("pref $key($maskedKey) value: $value");
+    
+    if (sb.isNotEmpty) {
+      sb.write(PREF_SEPARATOR);
+    }
+    if (value is List<String>) {
+      debugPrint("pref list: $value");
+      final listAsString = value
+          .where((v) => v.isNotEmpty)
+          .map((v) => v.replaceAll(KEY_VALUE_SEPARATOR, KEY_VALUE_SEPARATOR_REPLACEMENT))
+          .map((v) => _maskKey(v))
+          .join(LIST_SEPARATOR);
+      sb.write("${maskedKey}=$LIST_SEPARATOR$listAsString"); // LIST_SEPARATOR at the beginning indicated a List of Strings, even if there is no or just one element present
+    }
+    else {
+      sb.write("${maskedKey}=$value");
+    }
+  }
+
+  String _maskKey(String key) => key.replaceAll("/", "_");
+  String _unmaskKey(String maskedKey) => maskedKey.replaceAll("_", "/");
 
 
   String _getFullPath(String basePath, int? version) =>

@@ -13,11 +13,13 @@ import 'package:hyle_x/ui/pages/qr_reader.dart';
 import 'package:hyle_x/ui/pages/remotetest/remote_test_widget.dart';
 import 'package:hyle_x/ui/pages/settings_page.dart';
 import 'package:hyle_x/utils/fortune.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:listen_sharing_intent/listen_sharing_intent.dart';
 import 'package:tri_switcher/tri_switcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
+import 'package:badges/badges.dart' as badges;
 
 import '../../l10n/app_localizations.dart';
 import '../../model/achievements.dart';
@@ -29,6 +31,7 @@ import '../../model/user.dart';
 import '../../service/PlayStateManager.dart';
 import '../../service/PreferenceService.dart';
 import '../dialogs.dart';
+import '../notifications.dart';
 import '../ui_utils.dart';
 import 'game_ground.dart';
 import 'intro.dart';
@@ -43,6 +46,7 @@ enum MenuMode {
 }
 
 const PLAY_GROUND = "play_ground";
+final FIVE_DAYS_IN_MILLIS = Duration(days: 5).inMilliseconds;
 
 GlobalKey<StartPageState> globalStartPageKey = GlobalKey();
 
@@ -72,6 +76,9 @@ class StartPageState extends State<StartPage> {
   AppLocalizations get l10n => AppLocalizations.of(context)!;
 
 
+  List<GameNotification> gameNotifications = [];
+
+
   @override
   void initState() {
     super.initState();
@@ -81,6 +88,8 @@ class StartPageState extends State<StartPage> {
     PreferenceService().getInt(PreferenceService.DATA_LOGO_COLOR_Y).then((c) => setState(() {if (c != null) _logoY = c;} ));
     PreferenceService().getInt(PreferenceService.DATA_LOGO_COLOR_L).then((c) => setState(() {if (c != null) _logoL = c;} ));
     PreferenceService().getInt(PreferenceService.DATA_LOGO_COLOR_E).then((c) => setState(() {if (c != null) _logoE = c;} ));
+
+
 
     StorageService().loadUser().then((user) =>
         setState(() {
@@ -104,6 +113,126 @@ class StartPageState extends State<StartPage> {
       _readAndParseSharedText(value);
       ReceiveSharingIntent.instance.reset();
     });
+
+  }
+
+  List<GameNotification> _createGameNotifications() {
+    gameNotifications = [
+      GameNotification(
+          key: "showRuleKey",
+          message: l10n.gameNotification_showRuleKey,
+          icon: CupertinoIcons.question_circle_fill,
+          color: getColorFromIdx(1),
+          showWhen: (data, baseKey) {
+            final shown = data.getBool(baseKey, "shown");
+            return !shown && _user.achievements.getOverallGameCount(Scope.All) <= 1;
+          },
+          clickHandler: (data, baseKey) {
+            data.setBool(baseKey, "shown", true);
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) {
+                  return Intro();
+                }));
+            return true;
+          },
+          discardHandler: (data, baseKey) {
+            data.setBool(baseKey, "shown", true);
+          }
+      ),
+      GameNotification(
+          key: "stepUpLevelKey",
+          message: l10n.gameNotification_stepUpLevelKey,
+          icon: Icons.plus_one,
+          color: getColorFromIdx(2),
+          showWhen: (data, baseKey) {
+            final shownAtLevel = data.getInt(baseKey, "shownAtLevel");
+            final currentLevel = _user.achievements.getCurrentLevel();
+    
+            return currentLevel > 1 && currentLevel > shownAtLevel;
+          },
+          discardHandler: (data, baseKey) {
+            data.setInt(baseKey, "shownAtLevel", _user.achievements.getCurrentLevel());
+          }
+      ),
+      GameNotification(
+          key: "opponentsWaitingKey",
+          message: l10n.gameNotification_opponentsWaitingKey,
+          icon: MdiIcons.sleep,
+          color: getColorFromIdx(4),
+          showWhen: (data, baseKey) {
+            final shownAtTimestamp = data.getInt(baseKey, "shownAtTimestamp");
+            final currentTimestamp = DateTime.now().millisecondsSinceEpoch;
+    
+            return (shownAtTimestamp + (isDebug ? 60000 : FIVE_DAYS_IN_MILLIS) < currentTimestamp) && _userHasToTakeAction(data.allPlayHeaders);
+          },
+          clickHandler: (data, baseKey) {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) {
+                  return MultiPlayerMatches(_user, key: globalMultiPlayerMatchesKey);
+                })).then((result) => setState(() {}));
+            return false;
+          },
+          discardHandler: (data, baseKey) {
+            data.setInt(baseKey, "shownAtTimestamp", DateTime.now().millisecondsSinceEpoch);
+          }
+      ),
+      GameNotification(
+          key: "rateTheAppKey",
+          message: l10n.gameNotification_rateTheAppKey,
+          icon: MdiIcons.star,
+          color: getColorFromIdx(5),
+          showWhen: (data, baseKey) {
+            var shownAtGameCount = data.getInt(baseKey, "shownAtGameCount");
+            if (shownAtGameCount == 0) shownAtGameCount = 10;
+            final overallGameCount = _user.achievements.getOverallGameCount(Scope.All);
+    
+            if (shownAtGameCount == 0x7FFFFFFFFFFFFFFF) {
+              // indicator to never show it again
+              return false;
+            }
+    
+            return overallGameCount >= shownAtGameCount;
+          },
+          clickHandler: (data, baseKey) {
+            // if we assume the user rated, we will never ask again
+            data.setInt(baseKey, "shownAtGameCount", 0x7FFFFFFFFFFFFFFF);
+            if (isForPlayStore) {
+              launchUrlString(
+                  PLAY_STORE_URL, mode: LaunchMode.externalApplication);
+            }
+            else {
+              launchUrlString(
+                  HOMEPAGE_SCHEME + GITHUB_HOMEPAGE + GITHUB_HOMEPAGE_PATH,
+                  mode: LaunchMode.externalApplication);
+            }
+            return true;
+          },
+          discardHandler: (data, baseKey) {
+            data.setInt(baseKey, "shownAtGameCount", (_user.achievements.getOverallGameCount(Scope.All).toInt() * 2) + 10);
+          }
+      ),
+      GameNotification(
+          key: "inviteOpponentKey",
+          message: l10n.gameNotification_inviteOpponentKey,
+          icon: Icons.near_me,
+          color: getColorFromIdx(3),
+          showWhen: (data, baseKey) {
+            final shown = data.getBool(baseKey, "shown");
+            return !shown
+                && _user.achievements.getOverallGameCount(Scope.Single) >= 15
+                && _user.achievements.getOverallGameCount(Scope.Multi) == 0;
+          },
+          clickHandler: (data, baseKey) {
+            data.setBool(baseKey, "shown", true);
+            _sendMultiPlayInvite(context);
+            return true;
+          },
+          discardHandler: (data, baseKey) {
+            data.setBool(baseKey, "shown", true);
+          }
+      ),
+    ];
+    return gameNotifications;
   }
 
   void _readAndParseSharedText(List<SharedMediaFile> value) {
@@ -432,19 +561,7 @@ class StartPageState extends State<StartPage> {
                 child: _buildGameLogo(20, true)
             ),
 
-            if (isDebug)
-              GestureDetector(
-                onLongPress: () {
-                  if (_user.hasSigningCapability()) {
-                    showAlertDialog("User Public Key: ${_user.id}");
-                  }
-                  else {
-                    showAlertDialog("User ID: ${_user.id}");
-                  }
-                },
-                  child: _buildHello())
-            else
-              _buildHello(),
+            _buildHello(),
 
             GridView.count(
               crossAxisCount: 3,
@@ -486,11 +603,7 @@ class StartPageState extends State<StartPage> {
                     : _menuMode == MenuMode.MultiplayerNew
                     ? _buildCell(l10n.startMenu_sendInvite, 3, icon: Icons.near_me,
                     clickHandler: () async {
-                      if (context.mounted) {
-                        _selectPlayerGroundSize(context, (playSize) =>
-                            _selectMultiPlayerMode(context, (playMode) =>
-                              inviteRemoteOpponent(context, playSize, playMode)));
-                      }
+                      _sendMultiPlayInvite(context);
                     }
                 )
                     : _buildEmptyCell(),
@@ -508,7 +621,7 @@ class StartPageState extends State<StartPage> {
                               return HyleXGround(_user, play);
                             },
                                 settings: RouteSettings(name: PLAY_GROUND)
-                            ));
+                            )).then((result) => setState(() {}));
                       }
                       else {
                         showAlertDialog(l10n.error_nothingToResume);
@@ -527,6 +640,7 @@ class StartPageState extends State<StartPage> {
                                 ? MenuMode.None
                                 : MenuMode.Multiplayer),
                     longClickHandler: () {
+
                       if (isDebug) {
                           setState(() {
                             isDebug = !isDebug;
@@ -556,7 +670,7 @@ class StartPageState extends State<StartPage> {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
                           return MultiPlayerMatches(_user, key: globalMultiPlayerMatchesKey);
-                        }));
+                        })).then((result) => setState(() {}));
                   }
                 )
                     : _buildEmptyCell(),
@@ -577,7 +691,7 @@ class StartPageState extends State<StartPage> {
                        )
                     : _menuMode == MenuMode.More
                     ? _buildCell(l10n.startMenu_achievements, 1, icon: Icons.leaderboard,
-                    clickHandler: () => _showAchievementDialog())
+                    clickHandler: () => _showAchievementDialog(() => setState(() {})))
                     : _buildEmptyCell(),
 
                 _buildCell(l10n.startMenu_more, 1,
@@ -594,6 +708,22 @@ class StartPageState extends State<StartPage> {
               ],
 
             ),
+
+            FutureBuilder(
+                future: _loadNotificationData(),
+                builder: (_, snapshot) {
+                  if (!snapshot.hasError && snapshot.hasData) {
+                    return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        child: NotificationCarousel(
+                            gameNotifications.isEmpty ? _createGameNotifications() : gameNotifications
+                            , 
+                            snapshot.data ?? NotificationData.empty()));
+                  }
+                  else {
+                    return Container();
+                  }
+                }),
 
             Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -676,6 +806,20 @@ class StartPageState extends State<StartPage> {
     );
   }
 
+  Future<NotificationData> _loadNotificationData() async {
+    final properties = await PreferenceService().getStringList(PreferenceService.DATA_NOTIFICATION_PROPS)??[];
+    final allPlayHeaders = await StorageService().loadAllPlayHeaders();
+    return NotificationData(properties, allPlayHeaders);
+  }
+
+  void _sendMultiPlayInvite(BuildContext context) {
+    if (context.mounted) {
+      _selectPlayerGroundSize(context, (playSize) =>
+          _selectMultiPlayerMode(context, (playMode) =>
+            inviteRemoteOpponent(context, playSize, playMode)));
+    }
+  }
+
   void inviteRemoteOpponent(
       BuildContext context,
       PlaySize
@@ -754,7 +898,7 @@ class StartPageState extends State<StartPage> {
         showAlertDialog('Not yet implemented!');
       },
       onLongPress: longClickHandler,
-      child: _buildChip(label, 80, isMain ? 15 : 13, 5, colorIdx, icon),
+      child: _buildChip(label, 80, isMain ? 14 : 13, isMain ? 1.5 : 3.5, colorIdx, icon),
     );
   }
 
@@ -855,7 +999,8 @@ class StartPageState extends State<StartPage> {
               _user,
               Play.newSinglePlay(header, chaosPlayer, orderPlayer));
         },
-            settings: RouteSettings(name: PLAY_GROUND)));
+            settings: RouteSettings(name: PLAY_GROUND)))
+        .then((result) => setState(() {}));
   }
 
   Future<void> _startMultiPlayerGame(
@@ -927,22 +1072,29 @@ class StartPageState extends State<StartPage> {
 
   Widget _buildChip(String label, double radius, double textSize,
       double padding, int colorIdx, [IconData? icon]) {
-    final text = Text(label,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: textSize,
-                    color: Colors.white,
-                    fontWeight: icon == null ? FontWeight.bold : null,
-                  )
-              );
+    final text = Padding(
+      padding: const EdgeInsets.all(5.5),
+      child: Text(label,
+                    textAlign: TextAlign.center,
+                    softWrap: true,
+                    style: TextStyle(
+                      fontSize: textSize,
+                      color: Colors.white,
+                      fontWeight: icon == null ? FontWeight.bold : null,
+                    )
+                ),
+    );
     final content = icon != null
-        ? Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(icon, color: Colors.white),
-              text,
-            ],
-          )
+        ? Padding(
+          padding: const EdgeInsets.all(6.0),
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(icon, color: Colors.white),
+                text,
+              ],
+            ),
+        )
         : text;
     return Container(
       decoration: const BoxDecoration(
@@ -995,8 +1147,9 @@ class StartPageState extends State<StartPage> {
     );
   }
 
-  _showAchievementDialog() {
-    SmartDialog.show(builder: (_) {
+  _showAchievementDialog(Function() updateStateHandler) {
+    return SmartDialog.show(
+      builder: (_) {
 
       var filterScope = Scope.All;
 
@@ -1080,8 +1233,10 @@ class StartPageState extends State<StartPage> {
                         ask(l10n.dialog_resetAchievements, l10n, () {
                           _user.achievements.clearAll();
                           StorageService().saveUser(_user);
+                          updateStateHandler();
+
                           SmartDialog.dismiss();
-                          _showAchievementDialog();
+                          _showAchievementDialog(updateStateHandler);
                         });
 
                       },
@@ -1089,7 +1244,9 @@ class StartPageState extends State<StartPage> {
                   OutlinedButton(
                       style: OutlinedButton.styleFrom(
                           foregroundColor: Colors.lightGreenAccent),
-                      onPressed: () => SmartDialog.dismiss(),
+                      onPressed: () {
+                        SmartDialog.dismiss();
+                      },
                       child: Text(l10n.close)),
                 ],
               ),
@@ -1467,19 +1624,112 @@ class StartPageState extends State<StartPage> {
   }
 
   Widget _buildHello() {
-    if (_user.name.isNotEmpty)
-      return Text(
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500, fontStyle: FontStyle.italic),
-          l10n.hello(_user.name)
-      );
-    else if (isDebug)
-      return Text(
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500, fontStyle: FontStyle.italic),
-          l10n.hello(_user.getReadableId())
-      );
-      else
-        return Container();
+    var name = "";
+    if (_user.name.isNotEmpty) {
+      name = _user.name;
+    }
+
+    final overallScore = _user.achievements.getOverallScore(Scope.All);
+    final currentLevel = _user.achievements.getCurrentLevel();
+    return badges.Badge(
+      showBadge: isDebug || _user.achievements.getOverallGameCount(Scope.All) > 0,
+      position: badges.BadgePosition.topEnd(top: -27, end: -22),
+      badgeContent: Text(overallScore.toString(),
+          style: TextStyle(color: Colors.white)),
+      ignorePointer: false,
+      onTap: () => _showLegendDialog(currentLevel, overallScore),
+      badgeStyle: badges.BadgeStyle(
+          shape: badges.BadgeShape.instagram,
+          badgeColor: getColorFromIdx(currentLevel - 1),
+          borderSide: BorderSide(color: Colors.white, width: 2),
+          padding: EdgeInsets.all(7.5),
+          borderRadius: BorderRadius.circular(24),
+      ),
+      child: GestureDetector(
+        onTap: () => _showLegendDialog(currentLevel, overallScore),
+        child: Text(
+            style: TextStyle(fontSize: 24,
+                fontWeight: FontWeight.w500,
+                fontStyle: FontStyle.italic),
+            l10n.hello(name)
+        ),
+      ),
+    );
   }
+
+
+  _showLegendDialog(int currentLevel, num overallScore) {
+    SmartDialog.show(builder: (_) {
+      List<Widget> children = [
+        Text(
+          l10n.achievements_totalScore + " / " + l10n.levelState,
+          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
+        ),
+      ];
+      for (int level = 1; level <= Achievements.MAX_LEVEL; level++) {
+        children.add(Padding(
+          padding: const EdgeInsets.fromLTRB(12, 4, 8, 4),
+          child: Row(
+            children: [
+              _buildPassiveBadge(level, -1, null),
+              Spacer(),
+              if (currentLevel == level)
+                _buildPassiveBadge(level, currentLevel, overallScore),
+              if (currentLevel == level)
+                Spacer(),
+              Text("Level $level - ${getColorNameFromIndex(level - 1, l10n)}",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: currentLevel == level ? 18 : null,
+                      fontWeight: currentLevel == level ? FontWeight.bold : null))
+          ],),
+        ));
+      }
+
+      return Container(
+        height: 650,
+        width: 350,
+        decoration: BoxDecoration(
+          color: DIALOG_BG,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        alignment: Alignment.center,
+        child: GestureDetector(
+          onTap: () => SmartDialog.dismiss(),
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(18, 18, 18, 8),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisSize: MainAxisSize.max,
+              children: children,
+            ),
+          ),
+        ),
+      );
+    });
+  }
+
+  Expanded _buildPassiveBadge(int level, int currentLevel, num? overallScore) {
+    return Expanded(
+                child: badges.Badge(
+                    position: badges.BadgePosition.centerStart(),
+                    badgeContent: Text(overallScore?.toString()??_user.achievements.getThresholdForLevel(level).toString(),
+                        style: TextStyle(color: Colors.white)),
+                    badgeStyle: badges.BadgeStyle(
+                      shape: badges.BadgeShape.instagram,
+                      badgeColor: getColorFromIdx(level - 1),
+                      borderSide: BorderSide(color: Colors.white, width: currentLevel == level ? 2 : 1),
+                      padding: EdgeInsets.all(7.5),
+                      borderRadius: BorderRadius.circular(24),
+                    ),
+                    child: Text("     ",
+                        style: TextStyle(fontSize: 24,
+                            fontWeight: FontWeight.w500,
+                            fontStyle: FontStyle.italic))),
+              );
+  }
+
+  bool _userHasToTakeAction(List<PlayHeader> allPlayHeaders) => allPlayHeaders.any((header) => header.state.group == PlayStateGroup.TakeAction);
 
 }
 

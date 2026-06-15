@@ -14,8 +14,11 @@ final HOMEPAGE_SCHEME = 'https://';
 final HYLEX_HOMEPAGE = 'hylex.jepfa.de';
 final GITHUB_HOMEPAGE = 'github.com';
 final GITHUB_HOMEPAGE_PATH = '/jenspfahl/hylex';
+final PLAY_STORE_URL = "https://play.google.com/store/apps/details?id=de.jepfa.hyle_x";
 
 var isDebug = kDebugMode;
+
+final isForPlayStore = true;
 
 class HylexApp extends StatelessWidget {
   @override

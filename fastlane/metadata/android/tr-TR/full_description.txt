@@ -1,0 +1,13 @@
+Bu, Android için gizliliğe önem veren, Entropy / Hyle 7 benzeri bir masa oyunu klonudur. İster tek başınıza, ister arkadaşlarınızla oynayın!
+
+Eric Solomon'un orijinal oyunu "Entropy", arada rollerin değiştiği iki oyun turu gerektirir. HyleX ile, bir rol seçerek sadece tek bir turda kendinizle yarışabilirsiniz.
+
+Arkadaşlarınıza karşı da oynayabilirsiniz. Ancak merkezi bir oyun sunucusu olmadığını unutmayın. Siz ve rakibiniz hamlelerinizi standart mesajlaşma uygulamaları veya QR kodları aracılığıyla paylaşmalısınız.
+
+Özellikler:
+* Tek Oyunculu: Bilgisayara karşı yarışın
+* Çok Oyunculu: Uzaktaki bir rakibe karşı oynayın
+* Gizlilik: Merkezi sunucu yok, kişisel veri yok, reklam yok, takip yok
+* Açık Kaynaklı ve Ücretsizdir (FOSS)
+
+Daha fazla bilgi için <a href="https://hylex.jepfa.de">hylex.jepfa.de</a> adresini ziyaret edebilirsiniz.
