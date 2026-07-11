@@ -1,4 +1,4 @@
-![Static Badge](https://img.shields.io/badge/made_by-a_human_(not_AI)-green?style=flat-square)
+![Static Badge](https://img.shields.io/badge/made_by-a_human_(not_AI)-green)
 
 
 
